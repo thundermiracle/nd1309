@@ -72,9 +72,16 @@ class Blockchain {
         block.time = new Date().getTime().toString().slice(0, -3);
         block.hash = SHA256(JSON.stringify(block)).toString();
 
+        self.height = block.height;
         // push to chain
         this.chain.push(block);
-        self.height = block.height;
+
+        // validate block before resolve
+        const errors = await self.validateChain();
+        if (errors && errors.length > 0) {
+          throw errors;
+        }
+
         resolve(block);
       } catch (ex) {
         reject(ex);
@@ -125,7 +132,8 @@ class Blockchain {
       const currentTime = parseInt(
         new Date().getTime().toString().slice(0, -3)
       );
-      if (currentTime - time > 5 * 60) {
+      // over 5 minutes
+      if (Math.floor((currentTime - time) / 60) > 5) {
         reject("Timeout");
         return;
       }
@@ -136,7 +144,7 @@ class Blockchain {
       }
 
       const newBlock = await this._addBlock(
-        new BlockClass.Block({ star, address })
+        new BlockClass.Block({ star, owner: address })
       );
       resolve(newBlock);
     });
@@ -191,8 +199,9 @@ class Blockchain {
       for (let index = 1; index < self.chain.length; index++) {
         const block = self.chain[index];
         const blockData = await block.getBData();
-        if (blockData.address === address) {
-          stars.push(blockData.star);
+        if (blockData.owner === address) {
+          // return star info with owner address
+          stars.push(blockData);
         }
       }
 
