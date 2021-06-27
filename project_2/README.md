@@ -17,4 +17,4 @@ Truffle@5.3.10
 
 ## Your “Token Address” on the Rinkeby Network
 
-`0xc79933FEB08C6e597DBC158FB632Adf6b2EfD1a2`
+Contract Token: `0x2a5e9380D5716a375Ce263A3f5571a753A5EaFCC`
