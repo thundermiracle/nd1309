@@ -32,7 +32,7 @@ yarn
 ## Run
 
 ```bash
-# first terminal: start truffle server
+# first terminal: start truffle server (add `--network rinkeby` when deploy to rinkeby)
 truffle compile && truffle test && truffle migrate
 truffle develop
 
