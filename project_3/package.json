@@ -1,0 +1,23 @@
+{
+  "name": "project_3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "truffle.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "deploy:contract": "truffle compile && truffle migrate",
+    "dev": "lite-server",
+    "test": "truffle test",
+    "build:website": "cp -r src/ dist/ && cp -r build/contracts/* dist/",
+    "deploy:website": "yarn build:website && ipfs add -r dist/"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@truffle/hdwallet-provider": "^1.4.1",
+    "lite-server": "^2.3.0",
+    "truffle": "^5.3.10"
+  }
+}
