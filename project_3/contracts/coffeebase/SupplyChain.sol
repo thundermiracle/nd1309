@@ -151,7 +151,7 @@ contract SupplyChain is
     // In the constructor set 'owner' to the address that instantiated the contract
     // and set 'sku' to 1
     // and set 'upc' to 1
-    constructor() public payable {
+    constructor() payable {
         // owner = msg.sender;
         sku = 1;
         upc = 1;
@@ -168,11 +168,11 @@ contract SupplyChain is
     function harvestItem(
         uint256 _upc,
         address _originFarmerID,
-        string calldata _originFarmName,
-        string calldata _originFarmInformation,
-        string calldata _originFarmLatitude,
-        string calldata _originFarmLongitude,
-        string calldata _productNotes
+        string memory _originFarmName,
+        string memory _originFarmInformation,
+        string memory _originFarmLatitude,
+        string memory _originFarmLongitude,
+        string memory _productNotes
     ) public onlyFarmer {
         // Add the new item as part of Harvest
         items[_upc] = Item({
