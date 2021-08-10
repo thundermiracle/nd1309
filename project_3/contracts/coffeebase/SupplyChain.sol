@@ -178,7 +178,7 @@ contract SupplyChain is
         items[_upc] = Item({
             sku: sku,
             upc: _upc,
-            ownerID: msg.sender,
+            ownerID: _originFarmerID,
             originFarmerID: _originFarmerID,
             originFarmName: _originFarmName,
             originFarmInformation: _originFarmInformation,
