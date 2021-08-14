@@ -15,6 +15,12 @@
         <hr>
         <p style="text-align: center;">Prove the authenticity of coffee using the Ethereum blockchain.</p>
 
+        <div class="fixed-information">
+            <h2>Operation Result</h2>
+            <div id="ftc-item">
+            </div>
+        </div>
+
         <div id="ftc-harvest" class="main">
             <h2>Product Overview</h2>
             <div class="form-group">
@@ -26,7 +32,7 @@
                 <input type="number" id="upc" name="upc" value=1><br>
                 Current Owner ID
                 <br>
-                <input type="text" id="ownerID" name="ownerID" value="0x963865f57804b38459dd4b2da2f760211a200438"
+                <input type="text" id="ownerID" name="ownerID" value="0xc79933FEB08C6e597DBC158FB632Adf6b2EfD1a2"
                     size="50"><br>
                 <div class=button-div>
                     <button class="btn-fetchOne" id="button" type="button" data-id="9">Fetch Data 1</button>
@@ -39,7 +45,7 @@
                 Farmer ID
                 <br>
                 <input type="text" id="originFarmerID" name="originFarmerID"
-                    value="0x99c289eb2aacec289631a5ddf62cf27a63d4494f" size="50"><br>
+                    value="0xc79933FEB08C6e597DBC158FB632Adf6b2EfD1a2" size="50"><br>
                 Farm Name
                 <br>
                 <input type="text" id="originFarmName" name="originFarmName" value="John Doe"><br>
@@ -70,15 +76,15 @@
                 Distributor ID
                 <br>
                 <input type="text" id="distributorID" name="distributorID"
-                    value="0xf1b1bcd24dad92303dd9fe78be639f7bcf9c238d" size="50">
+                    value="0x89de7dDC1152c3C14319c2B99c165af8A4776e8E" size="50">
                 <br>
                 Retailer ID
                 <br>
-                <input type="text" id="retailerID" name="retailerID" value="0x0fb2bfefd526966c87efa19f6693d50971763fc2"
+                <input type="text" id="retailerID" name="retailerID" value="0x523AC4ee421aE2523C688E3Bb0E979D4ff6FD6EC"
                     size="50"><br>
                 Distributor ID
                 <br>
-                <input type="text" id="consumerID" name="consumerID" value="0x5d777e9127b28fb119e81a6304278a0a21bef1c4"
+                <input type="text" id="consumerID" name="consumerID" value="0x4605D0285114f8021bcbCd5F49a72e7E55A509c0"
                     size="50"><br>
                 <br>
                 <button class="btn-buy" id="button" type="button" data-id="5">Buy</button>
@@ -102,7 +108,7 @@
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <!-- <script src="js/web3.min.js"></script> -->
+    <script src="js/web3.min.js"></script>
     <script src="js/truffle-contract.js"></script>
     <script src="js/app.js"></script>
 </body>
