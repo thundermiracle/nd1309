@@ -8,13 +8,7 @@ import "../coffeeaccesscontrol/ConsumerRole.sol";
 import "../coffeecore/Ownable.sol";
 
 // Define a contract 'Supplychain'
-contract SupplyChain is
-    FarmerRole,
-    DistributorRole,
-    RetailerRole,
-    ConsumerRole,
-    Ownable
-{
+contract SupplyChain is FarmerRole, DistributorRole, RetailerRole, ConsumerRole, Ownable {
     // Define 'owner'
     // address owner;
 
@@ -33,17 +27,18 @@ contract SupplyChain is
 
     // Define enum 'State' with the following values:
     enum State {
-        Harvested, // 0
-        Processed, // 1
-        Packed, // 2
-        ForSale, // 3
-        Sold, // 4
-        Shipped, // 5
-        Received, // 6
-        Purchased // 7
+        None, // 0
+        Harvested, // 1
+        Processed, // 2
+        Packed, // 3
+        ForSale, // 4
+        Sold, // 5
+        Shipped, // 6
+        Received, // 7
+        Purchased // 8
     }
 
-    State constant defaultState = State.Harvested;
+    State constant defaultState = State.None;
 
     // Define a struct 'Item' with the following fields:
     struct Item {
@@ -187,7 +182,7 @@ contract SupplyChain is
             productID: _upc + sku,
             productNotes: _productNotes,
             productPrice: 0,
-            itemState: defaultState,
+            itemState: State.Harvested,
             distributorID: address(0),
             retailerID: address(0),
             consumerID: address(0)

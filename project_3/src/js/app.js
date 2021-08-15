@@ -202,8 +202,7 @@ App = {
 
         $("button").each(function () {
           const pID = parseInt($(this).data("id"));
-          // state from smart contract is starting from 0
-          if (itemState + 1 < pID) {
+          if (itemState < pID) {
             $(this).prop("disabled", false);
             $(this).removeClass("button-finished");
           } else {
@@ -272,7 +271,7 @@ App = {
       .then(function (instance) {
         return instance.harvestItem(
           App.data.upc,
-          App.data.metamaskAccountID,
+          App.metamaskAccountID,
           App.data.originFarmName,
           App.data.originFarmInformation,
           App.data.originFarmLatitude,

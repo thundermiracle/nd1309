@@ -6,13 +6,13 @@ A SupplyChain project made with Smart Contract.
 
 1. Token Address on the Rinkeby Network
 
-   - Transaction Hash: `0x149f6df49bc7a29c333f7fbc20357ec8fd7085908912adecbf3101db85b75e9e`
+   - Transaction Hash: `0x1146faae1eb9f952995c698ec76ed07c613102e5f048dce89320647f99b29808`
 
-     [https://rinkeby.etherscan.io/tx/0x149f6df49bc7a29c333f7fbc20357ec8fd7085908912adecbf3101db85b75e9e](https://rinkeby.etherscan.io/tx/0x149f6df49bc7a29c333f7fbc20357ec8fd7085908912adecbf3101db85b75e9e)
+     [https://rinkeby.etherscan.io/tx/0x1146faae1eb9f952995c698ec76ed07c613102e5f048dce89320647f99b29808](https://rinkeby.etherscan.io/tx/0x1146faae1eb9f952995c698ec76ed07c613102e5f048dce89320647f99b29808)
 
-   - Contract Address: `0x139294B464EEadc0053FfABf0866b25bF7d41fbC`
+   - Contract Address: `0x54689d0867fEd0C821F7d09C84579F5D639fDbE0`
 
-     [https://rinkeby.etherscan.io/address/0x139294b464eeadc0053ffabf0866b25bf7d41fbc](https://rinkeby.etherscan.io/address/0x139294b464eeadc0053ffabf0866b25bf7d41fbc)
+     [https://rinkeby.etherscan.io/address/0x54689d0867fEd0C821F7d09C84579F5D639fDbE0](https://rinkeby.etherscan.io/address/0x54689d0867fEd0C821F7d09C84579F5D639fDbE0)
 
 ## Installation
 
