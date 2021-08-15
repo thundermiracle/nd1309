@@ -33,8 +33,8 @@
                 <input type="number" id="upc" name="upc" value=1><br>
                 Current Owner ID
                 <br>
-                <input type="text" id="ownerID" name="ownerID" value="0xc79933FEB08C6e597DBC158FB632Adf6b2EfD1a2"
-                    size="50"><br>
+                <input class="readonly" type="text" id="ownerID" name="ownerID"
+                    value="0xc79933FEB08C6e597DBC158FB632Adf6b2EfD1a2" size="50" readonly><br>
                 <div class=button-div>
                     <button class="btn-fetchOne" id="button" type="button" data-id="9">Fetch Data 1</button>
                     <button class="btn-fetchTwo" id="button" type="button" data-id="10">Fetch Data 2</button>
@@ -45,8 +45,8 @@
             <div class="form-group">
                 Farmer ID
                 <br>
-                <input type="text" id="originFarmerID" name="originFarmerID"
-                    value="0xc79933FEB08C6e597DBC158FB632Adf6b2EfD1a2" size="50"><br>
+                <input class="readonly" type="text" id="farmID" name="originFarmerID" name="originFarmerID"
+                    value="0xc79933FEB08C6e597DBC158FB632Adf6b2EfD1a2" size="50" readonly><br>
                 Farm Name
                 <br>
                 <input type="text" id="originFarmName" name="originFarmName" value="John Doe"><br>
@@ -60,6 +60,12 @@
                 <br>
                 <input type="text" id="originFarmLongitude" name="originFarmLongitude" value="144.341490"><br>
                 <br>
+                Product Notes
+                <br>
+                <input type="text" id="productNotes" name="productNotes" value="Best beans for Espresso" size="60"><br>
+                Product Price
+                <br>
+                <input type="number" id="productPrice" name="productPrice" value=1>ETH<br>
                 <button class="btn-harvest" id="button" type="button" data-id="1">Harvest</button>
                 <button class="btn-process" id="button" type="button" data-id="2">Process</button>
                 <button class="btn-pack" id="button" type="button" data-id="3">Pack</button>
@@ -68,25 +74,19 @@
             <div class=form-break></div>
             <h2>Product Details</h2>
             <div class="form-group">
-                Product Notes
-                <br>
-                <input type="text" id="productNotes" name="productNotes" value="Best beans for Espresso" size="60"><br>
-                Product Price
-                <br>
-                <input type="number" id="productPrice" name="productPrice" value=1>ETH<br>
                 Distributor ID
                 <br>
-                <input type="text" id="distributorID" name="distributorID"
-                    value="0x89de7dDC1152c3C14319c2B99c165af8A4776e8E" size="50">
+                <input class="readonly" type="text" id="distributorID" name="distributorID"
+                    value="0x89de7dDC1152c3C14319c2B99c165af8A4776e8E" size="50" readonly>
                 <br>
                 Retailer ID
                 <br>
-                <input type="text" id="retailerID" name="retailerID" value="0x523AC4ee421aE2523C688E3Bb0E979D4ff6FD6EC"
-                    size="50"><br>
+                <input class="readonly" type="text" id="retailerID" name="retailerID"
+                    value="0x523AC4ee421aE2523C688E3Bb0E979D4ff6FD6EC" size="50" readonly><br>
                 Customer ID
                 <br>
-                <input type="text" id="consumerID" name="consumerID" value="0x4605D0285114f8021bcbCd5F49a72e7E55A509c0"
-                    size="50"><br>
+                <input class="readonly" type="text" id="consumerID" name="consumerID"
+                    value="0x4605D0285114f8021bcbCd5F49a72e7E55A509c0" size="50" readonly><br>
                 <br>
                 <button class="btn-buy" id="button" type="button" data-id="5">Buy</button>
                 <button class="btn-ship" id="button" type="button" data-id="6">Ship</button>

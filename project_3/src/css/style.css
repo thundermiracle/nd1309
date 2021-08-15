@@ -35,6 +35,10 @@ input {
   margin: 10px 0;
 }
 
+.readonly {
+  background: #ddd;
+}
+
 button {
   cursor: pointer;
   background-color: #4caf50;

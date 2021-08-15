@@ -280,7 +280,7 @@ App = {
         );
       })
       .then(function (result) {
-        $("#ftc-item").text(result);
+        $("#ftc-item").text(JSON.stringify(result));
         console.log("harvestItem", result);
       })
       .catch(function (err) {
@@ -295,7 +295,7 @@ App = {
         return instance.processItem(App.data.upc, { from: App.metamaskAccountID });
       })
       .then(function (result) {
-        $("#ftc-item").text(result);
+        $("#ftc-item").text(JSON.stringify(result));
         console.log("processItem", result);
       })
       .catch(function (err) {
@@ -310,7 +310,7 @@ App = {
         return instance.packItem(App.data.upc, { from: App.metamaskAccountID });
       })
       .then(function (result) {
-        $("#ftc-item").text(result);
+        $("#ftc-item").text(JSON.stringify(result));
         console.log("packItem", result);
       })
       .catch(function (err) {
@@ -329,7 +329,7 @@ App = {
         });
       })
       .then(function (result) {
-        $("#ftc-item").text(result);
+        $("#ftc-item").text(JSON.stringify(result));
         console.log("sellItem", result);
       })
       .catch(function (err) {
@@ -405,7 +405,7 @@ App = {
         return instance.fetchItemBufferOne(App.data.upc);
       })
       .then(function (result) {
-        $("#ftc-item").text(result);
+        $("#ftc-item").text(JSON.stringify(result));
         console.log("fetchItemBufferOne", result);
       })
       .catch(function (err) {
@@ -420,7 +420,7 @@ App = {
         return instance.fetchItemBufferTwo.call(App.data.upc);
       })
       .then(function (result) {
-        $("#ftc-item").text(result);
+        $("#ftc-item").text(JSON.stringify(result));
         console.log("fetchItemBufferTwo", result);
       })
       .catch(function (err) {
