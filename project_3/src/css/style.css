@@ -48,6 +48,12 @@ button {
   cursor: pointer;
 }
 
+.button-finished {
+  background-color: #888;
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+
 .button-disabled {
   background-color: #888;
   cursor: not-allowed;
