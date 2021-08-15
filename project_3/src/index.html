@@ -23,6 +23,23 @@
         </div>
 
         <div id="ftc-harvest" class="main">
+            <h2>Role Controller</h2>
+            <div class="form-group">
+                Distributor<br />
+                <input class="input-field role" type="text" id="distributorAddress" name="distributorAddress"
+                    value="0x89de7dDC1152c3C14319c2B99c165af8A4776e8E"><br>
+                Retailer<br />
+                <input class="input-field role" type="text" id="retailerAddress" name="retailerAddress"
+                    value="0x523AC4ee421aE2523C688E3Bb0E979D4ff6FD6EC"><br>
+                Customer<br />
+                <input class="input-field role" type="text" id="customerAddress" name="customerAddress"
+                    value="0x4605D0285114f8021bcbCd5F49a72e7E55A509c0"><br>
+                <div class="button-div">
+                    <div type="button" class="button" id="setRoles">Set Roles</div>
+                </div>
+            </div>
+            <br />
+
             <h2>Product Overview</h2>
             <div class="form-group">
                 SKU
@@ -45,27 +62,27 @@
             <div class="form-group">
                 Farmer ID
                 <br>
-                <input class="readonly" type="text" id="farmID" name="originFarmerID" name="originFarmerID"
-                    value="0xc79933FEB08C6e597DBC158FB632Adf6b2EfD1a2" size="50" readonly><br>
+                <input class="readonly" type="text" id="originFarmerID" name="originFarmerID" value="" size="50"
+                    readonly><br>
                 Farm Name
                 <br>
-                <input type="text" id="originFarmName" name="originFarmName" value="John Doe"><br>
+                <input type="text" id="originFarmName" name="originFarmName" value=""><br>
                 Farm Information
                 <br>
-                <input type="text" id="originFarmInformation" name="originFarmInformation" value="Yarra Valley"><br>
+                <input type="text" id="originFarmInformation" name="originFarmInformation" value=""><br>
                 Farm Latitude
                 <br>
-                <input type="text" id="originFarmLatitude" name="originFarmLatitude" value="-38.239770"><br>
+                <input type="text" id="originFarmLatitude" name="originFarmLatitude" value=""><br>
                 Farm Longitude
                 <br>
-                <input type="text" id="originFarmLongitude" name="originFarmLongitude" value="144.341490"><br>
+                <input type="text" id="originFarmLongitude" name="originFarmLongitude" value=""><br>
                 <br>
                 Product Notes
                 <br>
-                <input type="text" id="productNotes" name="productNotes" value="Best beans for Espresso" size="60"><br>
+                <input type="text" id="productNotes" name="productNotes" value="" size="60"><br>
                 Product Price
                 <br>
-                <input type="number" id="productPrice" name="productPrice" value=1>ETH<br>
+                <input type="number" id="productPrice" name="productPrice" value="1">ETH<br>
                 <button class="btn-harvest" id="button" type="button" data-id="1">Harvest</button>
                 <button class="btn-process" id="button" type="button" data-id="2">Process</button>
                 <button class="btn-pack" id="button" type="button" data-id="3">Pack</button>
@@ -76,17 +93,14 @@
             <div class="form-group">
                 Distributor ID
                 <br>
-                <input class="readonly" type="text" id="distributorID" name="distributorID"
-                    value="0x89de7dDC1152c3C14319c2B99c165af8A4776e8E" size="50" readonly>
+                <input class="readonly" type="text" id="distributorID" name="distributorID" value="" size="50" readonly>
                 <br>
                 Retailer ID
                 <br>
-                <input class="readonly" type="text" id="retailerID" name="retailerID"
-                    value="0x523AC4ee421aE2523C688E3Bb0E979D4ff6FD6EC" size="50" readonly><br>
+                <input class="readonly" type="text" id="retailerID" name="retailerID" value="" size="50" readonly><br>
                 Customer ID
                 <br>
-                <input class="readonly" type="text" id="consumerID" name="consumerID"
-                    value="0x4605D0285114f8021bcbCd5F49a72e7E55A509c0" size="50" readonly><br>
+                <input class="readonly" type="text" id="consumerID" name="consumerID" value="" size="50" readonly><br>
                 <br>
                 <button class="btn-buy" id="button" type="button" data-id="5">Buy</button>
                 <button class="btn-ship" id="button" type="button" data-id="6">Ship</button>

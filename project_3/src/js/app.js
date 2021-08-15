@@ -98,6 +98,24 @@ App = {
     $("#upc").on("change", function (e) {
       App.refreshCoffeeInfo();
     });
+    $("#setRoles").on("click", function (e) {
+      const distributorAddress = $("#distributorAddress").val();
+      const retailerAddress = $("#retailerAddress").val();
+      const customerAddress = $("#customerAddress").val();
+
+      App.contracts.SupplyChain.deployed()
+        .then(function (instance) {
+          return Promise.all([
+            instance.addDistributor(distributorAddress),
+            instance.addRetailer(retailerAddress),
+            instance.addConsumer(customerAddress),
+          ]);
+        })
+        .catch(function (err) {
+          console.log(err.message);
+          throw err;
+        });
+    });
 
     window.ethereum.on("accountsChanged", function (accounts) {
       App.metamaskAccountID = accounts[0];
@@ -176,7 +194,9 @@ App = {
 
           // not exist, clear all except sku & upc
           $("input").each(function () {
-            $(this).val("");
+            if (!$(this).prop("class").includes("role")) {
+              $(this).val("");
+            }
           });
 
           $("#sku").val(inputtedSku);
@@ -215,6 +235,12 @@ App = {
         console.log(err.message);
         throw err;
       });
+  },
+
+  handleAddRole: async function (event) {
+    event.preventDefault();
+
+    const currentProcessId = parseInt($(event.target).data("id"));
   },
 
   handleButtonClick: async function (event) {
