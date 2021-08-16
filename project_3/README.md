@@ -14,6 +14,26 @@ A SupplyChain project made with Smart Contract.
 
      [https://rinkeby.etherscan.io/address/0x54689d0867fEd0C821F7d09C84579F5D639fDbE0](https://rinkeby.etherscan.io/address/0x54689d0867fEd0C821F7d09C84579F5D639fDbE0)
 
+2. Library usage
+
+   - None
+
+3. IPFS
+
+   - Not used
+
+4. Program version
+
+   - Smart Contract: 0.8.0
+   - Truffle: 5.3.10
+   - @truffle/hdwallet-provider: 1.4.1
+   - web3: same with original source code
+   - nodejs: 12.19
+
+5. UML
+
+   in [./UML](./UML) folder
+
 ## Installation
 
 ```shell
