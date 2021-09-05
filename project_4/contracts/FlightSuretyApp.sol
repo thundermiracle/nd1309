@@ -1,10 +1,11 @@
-pragma solidity ^0.4.25;
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.7;
 
 // It's important to avoid vulnerabilities due to numeric overflow bugs
 // OpenZeppelin's SafeMath library, when used correctly, protects agains such bugs
 // More info: https://www.nccgroup.trust/us/about-us/newsroom-and-events/blog/2018/november/smart-contract-insecurity-bad-arithmetic/
 
-import "../node_modules/openzeppelin-solidity/contracts/math/SafeMath.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 /************************************************** */
 /* FlightSurety Smart Contract                      */
@@ -68,7 +69,7 @@ contract FlightSuretyApp {
      * @dev Contract constructor
      *
      */
-    constructor() public {
+    constructor() {
         contractOwner = msg.sender;
     }
 
@@ -112,14 +113,16 @@ contract FlightSuretyApp {
     // Generate a request for oracles to fetch flight information
     function fetchFlightStatus(
         address airline,
-        string flight,
+        string memory flight,
         uint256 timestamp
     ) external {
         uint8 index = getRandomIndex(msg.sender);
 
         // Generate a unique key for storing the request
         bytes32 key = keccak256(abi.encodePacked(index, airline, flight, timestamp));
-        oracleResponses[key] = ResponseInfo({requester: msg.sender, isOpen: true});
+        ResponseInfo storage oracleResp = oracleResponses[key];
+        oracleResp.requester = msg.sender;
+        oracleResp.isOpen = true;
 
         emit OracleRequest(index, airline, flight, timestamp);
     }
@@ -176,7 +179,7 @@ contract FlightSuretyApp {
         oracles[msg.sender] = Oracle({isRegistered: true, indexes: indexes});
     }
 
-    function getMyIndexes() external view returns (uint8[3]) {
+    function getMyIndexes() external view returns (uint8[3] memory) {
         require(oracles[msg.sender].isRegistered, "Not registered as an oracle");
 
         return oracles[msg.sender].indexes;
@@ -189,7 +192,7 @@ contract FlightSuretyApp {
     function submitOracleResponse(
         uint8 index,
         address airline,
-        string flight,
+        string memory flight,
         uint256 timestamp,
         uint8 statusCode
     ) external {
@@ -218,14 +221,14 @@ contract FlightSuretyApp {
 
     function getFlightKey(
         address airline,
-        string flight,
+        string memory flight,
         uint256 timestamp
     ) internal pure returns (bytes32) {
         return keccak256(abi.encodePacked(airline, flight, timestamp));
     }
 
     // Returns array of three non-duplicating integers from 0-9
-    function generateIndexes(address account) internal returns (uint8[3]) {
+    function generateIndexes(address account) internal returns (uint8[3] memory) {
         uint8[3] memory indexes;
         indexes[0] = getRandomIndex(account);
 
