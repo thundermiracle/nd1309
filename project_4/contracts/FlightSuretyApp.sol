@@ -16,6 +16,7 @@ contract FlightSuretyApp {
   /********************************************************************************************/
   /*                                       DATA VARIABLES                                     */
   /********************************************************************************************/
+  bool private operational = true;
 
   // Flight status codees
   uint8 private constant STATUS_CODE_UNKNOWN = 0;
@@ -54,7 +55,7 @@ contract FlightSuretyApp {
    */
   modifier requireIsOperational() {
     // Modify to call data contract's status
-    require(true, "Contract is currently not operational");
+    require(operational, "Contract is currently not operational");
     _; // All modifiers require an "_" which indicates where the function body will be added
   }
 
@@ -98,8 +99,12 @@ contract FlightSuretyApp {
   /*                                       UTILITY FUNCTIONS                                  */
   /********************************************************************************************/
 
-  function isOperational() public pure returns (bool) {
-    return true; // Modify to call data contract's status
+  function isOperational() public view returns (bool) {
+    return operational; // Modify to call data contract's status
+  }
+
+  function setOperatingStatus(bool mode) external requireContractOwner {
+    operational = mode;
   }
 
   /********************************************************************************************/
@@ -112,6 +117,7 @@ contract FlightSuretyApp {
    */
   function registerAirline(address targetAirlineAddress)
     external
+    requireIsOperational
     requireAirlineFunded(msg.sender)
     returns (bool success, uint256 votes)
   {
@@ -150,7 +156,12 @@ contract FlightSuretyApp {
     );
   }
 
-  function fundAirline() external payable requireAirlineRegistered(msg.sender) {
+  function fundAirline()
+    external
+    payable
+    requireIsOperational
+    requireAirlineRegistered(msg.sender)
+  {
     require(msg.value < MIN_FUND_VALUE, "At least 10 ether is required for funding");
 
     // transfer funds to Data contract
@@ -262,7 +273,7 @@ contract FlightSuretyApp {
     string memory flight,
     uint256 timestamp,
     uint8 statusCode
-  ) external {
+  ) external requireIsOperational {
     require(
       (oracles[msg.sender].indexes[0] == index) ||
         (oracles[msg.sender].indexes[1] == index) ||
