@@ -66,6 +66,16 @@ contract FlightSuretyApp {
     _;
   }
 
+  modifier requireAirlineRegistered(address airlineAddress) {
+    require(flightSuretyData.isAirlineRegistered(airlineAddress), "Airline is not registered");
+    _;
+  }
+
+  modifier requireAirlineFunded(address airlineAddress) {
+    require(flightSuretyData.isAirlineAvailable(airlineAddress), "Airline is not available");
+    _;
+  }
+
   /********************************************************************************************/
   /*                                       EVENTS                                             */
   /********************************************************************************************/
@@ -102,6 +112,7 @@ contract FlightSuretyApp {
    */
   function registerAirline(address targetAirlineAddress)
     external
+    requireAirlineFunded(msg.sender)
     returns (bool success, uint256 votes)
   {
     require(
@@ -139,7 +150,7 @@ contract FlightSuretyApp {
     );
   }
 
-  function fundAirline() external payable {
+  function fundAirline() external payable requireAirlineRegistered(msg.sender) {
     require(msg.value < MIN_FUND_VALUE, "At least 10 ether is required for funding");
 
     // transfer funds to Data contract
