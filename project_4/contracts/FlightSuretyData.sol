@@ -130,7 +130,6 @@ contract FlightSuretyData {
   function isAirlineRegistered(address airlineAddress)
     external
     view
-    requireCallerAuthorized
     requireIsOperational
     requireAddressValid(airlineAddress)
     returns (bool)
@@ -141,7 +140,6 @@ contract FlightSuretyData {
   function isAirlineAvailable(address airlineAddress)
     external
     view
-    requireCallerAuthorized
     requireAddressValid(airlineAddress)
     returns (bool)
   {
@@ -151,7 +149,6 @@ contract FlightSuretyData {
   function isAirlineVoted(address voteForAirlineAddress, address voteFromAirlineAddress)
     external
     view
-    requireCallerAuthorized
     requireIsOperational
     requireAddressValid(voteForAirlineAddress)
     requireAddressValid(voteFromAirlineAddress)
@@ -160,16 +157,11 @@ contract FlightSuretyData {
     return airlines[voteForAirlineAddress].votedAirlines[voteFromAirlineAddress];
   }
 
-  function getAirlineVoteCount(address airlineAddress)
-    external
-    view
-    requireCallerAuthorized
-    returns (uint256)
-  {
+  function getAirlineVoteCount(address airlineAddress) external view returns (uint256) {
     return airlines[airlineAddress].votes;
   }
 
-  function getAvailableAirlinesCount() external view requireCallerAuthorized returns (uint256) {
+  function getAvailableAirlinesCount() external view returns (uint256) {
     return availableAirlines.length;
   }
 
