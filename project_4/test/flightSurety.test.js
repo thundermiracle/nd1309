@@ -101,4 +101,58 @@ contract("Flight Surety Tests", async (accounts) => {
       "Airline should be able to register another airline if it has provided funding"
     );
   });
+
+  it("(airline) consensus is required to registerAirline() after 4 airlines were available", async () => {
+    // ARRANGE
+    const airline2 = accounts[2];
+    const airline3 = accounts[3];
+    const airline4 = accounts[4];
+    const airline5 = accounts[5];
+
+    /**************************************************************** */
+    /* Register & fund 4 airlines */
+    /**************************************************************** */
+    // account[2] is already registered in the last test case
+    await config.flightSuretyApp.fundAirline({
+      from: airline2,
+      value: ETHER_10,
+      gasPrice: 0,
+    });
+
+    await config.flightSuretyApp.registerAirline(airline3, { from: config.firstAirline });
+    await config.flightSuretyApp.fundAirline({
+      from: airline3,
+      value: ETHER_10,
+      gasPrice: 0,
+    });
+
+    await config.flightSuretyApp.registerAirline(airline4, { from: config.firstAirline });
+    await config.flightSuretyApp.fundAirline({
+      from: airline4,
+      value: ETHER_10,
+      gasPrice: 0,
+    });
+
+    // Register 5th airline
+    await config.flightSuretyApp.registerAirline(airline5, { from: config.firstAirline });
+    const isAirline5Registered = await config.flightSuretyData.isAirlineRegistered.call(airline5);
+
+    // ASSERT
+    assert.equal(
+      isAirline5Registered,
+      false,
+      "Airline should not be able to be registered without consensus."
+    );
+
+    // Register 5th airline again to pass the consensus
+    await config.flightSuretyApp.registerAirline(airline5, { from: airline2 });
+    const isAirline5RegisteredAfterConsensus =
+      await config.flightSuretyData.isAirlineRegistered.call(airline5);
+
+    assert.equal(
+      isAirline5RegisteredAfterConsensus,
+      true,
+      "Airline should not be able to be registered after consensus pass."
+    );
+  });
 });

@@ -135,7 +135,7 @@ contract FlightSuretyApp {
     } else {
       // consensus required when airlines' count is over 4
       require(
-        flightSuretyData.isAirlineVoted(targetAirlineAddress, msg.sender),
+        !flightSuretyData.isAirlineVoted(targetAirlineAddress, msg.sender),
         "Airline is already voted"
       );
 
