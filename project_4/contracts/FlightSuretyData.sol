@@ -106,7 +106,7 @@ contract FlightSuretyData {
     operational = mode;
   }
 
-  function authorizeContact(address appContractAddress)
+  function authorizeCaller(address appContractAddress)
     external
     requireContractOwner
     requireIsOperational
@@ -115,7 +115,7 @@ contract FlightSuretyData {
     authorizedContracts[appContractAddress] = 1;
   }
 
-  function deauthorizeContract(address appContractAddress)
+  function deauthorizeCaller(address appContractAddress)
     external
     requireContractOwner
     requireIsOperational

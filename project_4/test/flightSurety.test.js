@@ -2,10 +2,11 @@ var Test = require("../config/testConfig.js");
 var BigNumber = require("bignumber.js");
 
 contract("Flight Surety Tests", async (accounts) => {
+  const ETHER_10 = web3.utils.toWei("10", "ether");
   var config;
   before("setup contract", async () => {
     config = await Test.Config(accounts);
-    // await config.flightSuretyData.authorizeCaller(config.flightSuretyApp.address);
+    await config.flightSuretyData.authorizeCaller(config.flightSuretyApp.address);
   });
 
   /****************************************************************************************/
@@ -63,15 +64,34 @@ contract("Flight Surety Tests", async (accounts) => {
     try {
       await config.flightSuretyApp.registerAirline(newAirline, { from: config.firstAirline });
     } catch (e) {}
-    let result = await config.flightSuretyData.isAirlineAvailable.call(newAirline, {
-      from: config.firstAirline,
-    });
+    let result = await config.flightSuretyData.isAirlineRegistered.call(newAirline);
 
     // ASSERT
     assert.equal(
       result,
       false,
       "Airline should not be able to register another airline if it hasn't provided funding"
+    );
+  });
+
+  it("(airline) can register an Airline using registerAirline() after funded enough", async () => {
+    // ARRANGE
+    let newAirline = accounts[2];
+
+    // ACT
+    await config.flightSuretyApp.fundAirline({
+      from: config.firstAirline,
+      value: ETHER_10,
+      gasPrice: 0,
+    });
+    await config.flightSuretyApp.registerAirline(newAirline, { from: config.firstAirline });
+    let result = await config.flightSuretyData.isAirlineRegistered.call(newAirline);
+
+    // ASSERT
+    assert.equal(
+      result,
+      true,
+      "Airline should be able to register another airline if it has provided funding"
     );
   });
 });

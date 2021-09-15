@@ -81,6 +81,7 @@ contract FlightSuretyApp {
   /*                                       EVENTS                                             */
   /********************************************************************************************/
   event AirlineRegistered(uint256 count_);
+  event AirlieFunded(address airlineAddress, uint256 funds);
 
   /********************************************************************************************/
   /*                                       CONSTRUCTOR                                        */
@@ -162,13 +163,16 @@ contract FlightSuretyApp {
     requireIsOperational
     requireAirlineRegistered(msg.sender)
   {
-    require(msg.value < MIN_FUND_VALUE, "At least 10 ether is required for funding");
+    require(msg.value >= MIN_FUND_VALUE, "At least 10 ether is required for funding");
 
     // transfer funds to Data contract
-    payable(address(flightSuretyData)).transfer(msg.value);
+    payable(address(uint160(address(flightSuretyData)))).transfer(msg.value);
+    // payable(address(flightSuretyData)).transfer(msg.value);
 
     // make airline available after transfering funds
     flightSuretyData.fundAirline(msg.sender, msg.value);
+
+    emit AirlieFunded(msg.sender, msg.value);
   }
 
   /**
