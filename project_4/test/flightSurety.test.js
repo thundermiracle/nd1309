@@ -76,7 +76,7 @@ contract("Flight Surety Tests", async (accounts) => {
 
   it("(airline) can register an Airline using registerAirline() after funded enough", async () => {
     // ARRANGE
-    let newAirline = accounts[2];
+    const newAirline = accounts[2];
 
     // ACT
     await config.flightSuretyApp.fundAirline({
@@ -84,12 +84,19 @@ contract("Flight Surety Tests", async (accounts) => {
       value: ETHER_10,
       gasPrice: 0,
     });
+    const firstAirlineFunds = await config.flightSuretyData.getAirlineFunds.call(
+      config.firstAirline
+    );
+    assert.equal(firstAirlineFunds, ETHER_10, "Airline is not successfully funded");
+
     await config.flightSuretyApp.registerAirline(newAirline, { from: config.firstAirline });
-    let result = await config.flightSuretyData.isAirlineRegistered.call(newAirline);
+    const isNewAirlineRegistered = await config.flightSuretyData.isAirlineRegistered.call(
+      newAirline
+    );
 
     // ASSERT
     assert.equal(
-      result,
+      isNewAirlineRegistered,
       true,
       "Airline should be able to register another airline if it has provided funding"
     );

@@ -166,8 +166,10 @@ contract FlightSuretyApp {
     require(msg.value >= MIN_FUND_VALUE, "At least 10 ether is required for funding");
 
     // transfer funds to Data contract
-    payable(address(uint160(address(flightSuretyData)))).transfer(msg.value);
-    // payable(address(flightSuretyData)).transfer(msg.value);
+    address payable dataContract = payable(address(flightSuretyData));
+    // dataContract.transfer(msg.value);
+    (bool success, ) = dataContract.call{value: msg.value}("");
+    require(success, "ether transfer failed");
 
     // make airline available after transfering funds
     flightSuretyData.fundAirline(msg.sender, msg.value);

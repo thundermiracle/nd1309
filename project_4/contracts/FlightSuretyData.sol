@@ -165,6 +165,10 @@ contract FlightSuretyData {
     return availableAirlines.length;
   }
 
+  function getAirlineFunds(address airlineAddress) external view returns (uint256) {
+    return airlines[airlineAddress].funds;
+  }
+
   /********************************************************************************************/
   /*                                     SMART CONTRACT FUNCTIONS                             */
   /********************************************************************************************/
@@ -201,6 +205,7 @@ contract FlightSuretyData {
   {
     airlines[airlineAddress].funds = airlines[airlineAddress].funds.add(funds);
     airlines[airlineAddress].status = AirlineStatus.AVAILABLE;
+    availableAirlines.push(airlineAddress);
   }
 
   /**
