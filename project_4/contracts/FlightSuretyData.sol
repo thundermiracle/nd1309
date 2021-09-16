@@ -302,11 +302,11 @@ contract FlightSuretyData {
   function fund() public payable requireIsOperational {}
 
   function getFlightKey(
-    address airline,
+    address airlineAddress,
     string memory flight,
     uint256 timestamp
   ) internal pure returns (bytes32) {
-    return keccak256(abi.encodePacked(airline, flight, timestamp));
+    return keccak256(abi.encodePacked(airlineAddress, flight, timestamp));
   }
 
   /**
