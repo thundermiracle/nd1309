@@ -28,6 +28,7 @@ contract FlightSuretyApp {
 
   uint8 private constant REGISTERED_COUNT_NEED_CONSENSUS = 4;
   uint256 private constant MIN_FUND_VALUE = 10 ether;
+  uint256 private constant MAX_INSURANCE_VALUE = 1 ether;
 
   FlightSuretyData flightSuretyData;
 
@@ -82,6 +83,13 @@ contract FlightSuretyApp {
   /********************************************************************************************/
   event AirlineRegistered(uint256 count_);
   event AirlieFunded(address airlineAddress, uint256 funds);
+  event InsuranceBought(
+    address airlineAddress,
+    string flight,
+    uint256 timestamp,
+    address passenger,
+    uint256 amount
+  );
 
   /********************************************************************************************/
   /*                                       CONSTRUCTOR                                        */
@@ -175,6 +183,27 @@ contract FlightSuretyApp {
     flightSuretyData.fundAirline(msg.sender, msg.value);
 
     emit AirlieFunded(msg.sender, msg.value);
+  }
+
+  function buyInsurance(
+    address airline,
+    string memory flight,
+    uint256 timestamp
+  ) external payable requireIsOperational requireAirlineFunded(airline) {
+    require(
+      msg.value > 0 && msg.value <= MAX_INSURANCE_VALUE,
+      "Insurance fee must be lower than 1 ether"
+    );
+
+    // transfer funds to Data contract
+    address payable dataContract = payable(address(flightSuretyData));
+    // dataContract.transfer(msg.value);
+    (bool success, ) = dataContract.call{value: msg.value}("");
+    require(success, "ether transfer failed");
+
+    flightSuretyData.buyInsurance(airline, flight, timestamp, msg.sender, msg.value);
+
+    emit InsuranceBought(airline, flight, timestamp, msg.sender, msg.value);
   }
 
   /**
@@ -303,14 +332,6 @@ contract FlightSuretyApp {
     }
   }
 
-  function getFlightKey(
-    address airline,
-    string memory flight,
-    uint256 timestamp
-  ) internal pure returns (bytes32) {
-    return keccak256(abi.encodePacked(airline, flight, timestamp));
-  }
-
   // Returns array of three non-duplicating integers from 0-9
   function generateIndexes(address account) internal returns (uint8[3] memory) {
     uint8[3] memory indexes;
@@ -349,6 +370,7 @@ contract FlightSuretyApp {
 }
 
 abstract contract FlightSuretyData {
+  // airlines
   function registerAirline(address airlineAddress) external virtual;
 
   function getAvailableAirlinesCount() external view virtual returns (uint256);
@@ -370,4 +392,13 @@ abstract contract FlightSuretyData {
     virtual;
 
   function fundAirline(address airlineAddress, uint256 funds) external virtual;
+
+  // flights
+  function buyInsurance(
+    address airlineAddress,
+    string memory flight,
+    uint256 timestamp,
+    address passenger,
+    uint256 insuranceAmount
+  ) external virtual;
 }

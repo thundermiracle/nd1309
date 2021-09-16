@@ -3,7 +3,12 @@ var BigNumber = require("bignumber.js");
 
 contract("Flight Surety Tests", async (accounts) => {
   const ETHER_10 = web3.utils.toWei("10", "ether");
-  var config;
+  const ETHER_1 = web3.utils.toWei("1", "ether");
+  const CURRENT_TIME = Math.floor(Date.now() / 1000);
+  const PASSENGER_1 = accounts[7];
+  const PASSENGER_2 = accounts[8];
+
+  let config;
   before("setup contract", async () => {
     config = await Test.Config(accounts);
     await config.flightSuretyData.authorizeCaller(config.flightSuretyApp.address);
@@ -15,7 +20,7 @@ contract("Flight Surety Tests", async (accounts) => {
 
   it(`(multiparty) has correct initial isOperational() value`, async function () {
     // Get operating status
-    let status = await config.flightSuretyData.isOperational.call();
+    const status = await config.flightSuretyData.isOperational.call();
     assert.equal(status, true, "Incorrect initial operating status value");
   });
 
@@ -58,7 +63,7 @@ contract("Flight Surety Tests", async (accounts) => {
 
   it("(airline) cannot register an Airline using registerAirline() if it is not funded", async () => {
     // ARRANGE
-    let newAirline = accounts[2];
+    const newAirline = accounts[2];
 
     // ACT
     try {
@@ -154,5 +159,50 @@ contract("Flight Surety Tests", async (accounts) => {
       true,
       "Airline should not be able to be registered after consensus pass."
     );
+  });
+
+  it("(insurance) can't buy insurance for airlines that are not funded", async () => {
+    // ARRANGE
+    const airline5 = accounts[5];
+
+    // try to buy insurance for airline which is not funded enough
+    let errMsgBeforeAirlineFunded = "";
+    try {
+      await config.flightSuretyApp.buyInsurance(airline5, "NH097", CURRENT_TIME, {
+        from: airline5,
+        value: ETHER_1,
+        gasPrice: 0,
+      });
+    } catch (e) {
+      errMsgBeforeAirlineFunded = e.message;
+    }
+    assert.equal(
+      errMsgBeforeAirlineFunded.includes("Airline is not available"),
+      true,
+      "Airline should be funded enough before provide insurance"
+    );
+
+    // ACT
+    await config.flightSuretyApp.fundAirline({
+      from: airline5,
+      value: ETHER_10,
+      gasPrice: 0,
+    });
+    await config.flightSuretyApp.buyInsurance(airline5, "NH097", CURRENT_TIME, {
+      from: PASSENGER_2,
+      value: ETHER_1,
+      gasPrice: 0,
+    });
+
+    const { amount, paid } = await config.flightSuretyData.getInsuranceInfo.call(
+      airline5,
+      "NH097",
+      CURRENT_TIME,
+      PASSENGER_2
+    );
+
+    // ASSERT
+    assert.equal(amount, ETHER_1, "Insurance is bought successfully");
+    assert.equal(paid, false, "Insurance is not paid");
   });
 });

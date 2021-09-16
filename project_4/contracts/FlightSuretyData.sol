@@ -9,29 +9,48 @@ contract FlightSuretyData {
   /********************************************************************************************/
   /*                                       DATA VARIABLES                                     */
   /********************************************************************************************/
+  address private contractOwner; // Account used to deploy contract
+  bool private operational = true; // Blocks all state changes throughout the contract if false
+  mapping(address => uint256) private authorizedContracts; // App Contracts which can call functions in this contract
+
   enum AirlineStatus {
     NONE, // default status
     REGISTERED, // Registered by available airline
     AVAILABLE // fund 10 ether after registered
   }
-
   struct Airline {
     AirlineStatus status;
     uint256 funds;
     uint256 votes;
+    uint256 insuranceReceived;
+    uint256 insurancePaid;
     mapping(address => bool) votedAirlines;
   }
-
-  address private contractOwner; // Account used to deploy contract
-  bool private operational = true; // Blocks all state changes throughout the contract if false
-  mapping(address => uint256) private authorizedContracts; // App Contracts which can call functions in this contract
   address[] private availableAirlines; // current available airlines
   mapping(address => Airline) private airlines;
+
+  struct Insurance {
+    address passenger;
+    uint256 amount;
+    bool paid;
+  }
+  mapping(bytes32 => Insurance[]) private flightInsurances;
 
   /********************************************************************************************/
   /*                                       EVENT DEFINITIONS                                  */
   /********************************************************************************************/
   event Received(address, uint256);
+  event AirlineRegistered(address);
+  event AirlineFunded(address, uint256);
+  event AirlineVoted(address, address, uint256);
+  event InsuranceBought(
+    address airlineAddress,
+    string flight,
+    uint256 timestamp,
+    address passenger,
+    uint256 amount,
+    bool paid
+  );
 
   /**
    * @dev Constructor
@@ -169,6 +188,26 @@ contract FlightSuretyData {
     return airlines[airlineAddress].funds;
   }
 
+  event TestEmit(address airlineAddress, string flight, uint256 timestamp, address passenger);
+
+  function getInsuranceInfo(
+    address airlineAddress,
+    string memory flight,
+    uint256 timestamp,
+    address passenger
+  ) external view returns (uint256 amount, bool paid) {
+    bytes32 flightKey = getFlightKey(airlineAddress, flight, timestamp);
+    Insurance[] memory allInsurances = flightInsurances[flightKey];
+
+    for (uint256 ind = 0; ind < allInsurances.length; ind++) {
+      if (allInsurances[ind].passenger == passenger) {
+        return (allInsurances[ind].amount, allInsurances[ind].paid);
+      }
+    }
+
+    return (0, false);
+  }
+
   /********************************************************************************************/
   /*                                     SMART CONTRACT FUNCTIONS                             */
   /********************************************************************************************/
@@ -185,6 +224,8 @@ contract FlightSuretyData {
     requireAddressValid(airlineAddress)
   {
     airlines[airlineAddress].status = AirlineStatus.REGISTERED;
+
+    emit AirlineRegistered(airlineAddress);
   }
 
   function voteAirline(address voteForAirlineAddress, address voteFromAirlineAddress)
@@ -196,6 +237,12 @@ contract FlightSuretyData {
   {
     airlines[voteForAirlineAddress].votedAirlines[voteFromAirlineAddress] = true;
     airlines[voteForAirlineAddress].votes = airlines[voteForAirlineAddress].votes.add(1);
+
+    emit AirlineVoted(
+      voteForAirlineAddress,
+      voteFromAirlineAddress,
+      airlines[voteForAirlineAddress].votes
+    );
   }
 
   function fundAirline(address airlineAddress, uint256 funds)
@@ -206,13 +253,35 @@ contract FlightSuretyData {
     airlines[airlineAddress].funds = airlines[airlineAddress].funds.add(funds);
     airlines[airlineAddress].status = AirlineStatus.AVAILABLE;
     availableAirlines.push(airlineAddress);
+
+    emit AirlineFunded(airlineAddress, airlines[airlineAddress].funds);
   }
 
   /**
    * @dev Buy insurance for a flight
    *
    */
-  function buy() external payable {}
+  function buyInsurance(
+    address airlineAddress,
+    string memory flight,
+    uint256 timestamp,
+    address passenger,
+    uint256 insuranceAmount
+  ) external requireCallerAuthorized requireAddressValid(airlineAddress) {
+    bytes32 flightKey = getFlightKey(airlineAddress, flight, timestamp);
+
+    Insurance memory passengerInsurance = Insurance(passenger, insuranceAmount, false);
+    flightInsurances[flightKey].push(passengerInsurance);
+
+    emit InsuranceBought(
+      airlineAddress,
+      flight,
+      timestamp,
+      passengerInsurance.passenger,
+      passengerInsurance.amount,
+      passengerInsurance.paid
+    );
+  }
 
   /**
    *  @dev Credits payouts to insurees
