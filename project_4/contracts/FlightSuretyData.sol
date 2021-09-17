@@ -29,6 +29,21 @@ contract FlightSuretyData {
   address[] private availableAirlines; // current available airlines
   mapping(address => Airline) private airlines;
 
+  // Flight status codees
+  uint8 private constant STATUS_CODE_UNKNOWN = 0;
+  uint8 private constant STATUS_CODE_ON_TIME = 10;
+  uint8 private constant STATUS_CODE_LATE_AIRLINE = 20;
+  uint8 private constant STATUS_CODE_LATE_WEATHER = 30;
+  uint8 private constant STATUS_CODE_LATE_TECHNICAL = 40;
+  uint8 private constant STATUS_CODE_LATE_OTHER = 50;
+  struct Flight {
+    address airline;
+    string flight;
+    uint256 timestamp;
+    uint8 statusCode;
+  }
+  mapping(bytes32 => Flight) private flights;
+
   struct Insurance {
     address passenger;
     uint256 amount;
@@ -43,14 +58,9 @@ contract FlightSuretyData {
   event AirlineRegistered(address);
   event AirlineFunded(address, uint256);
   event AirlineVoted(address, address, uint256);
-  event InsuranceBought(
-    address airlineAddress,
-    string flight,
-    uint256 timestamp,
-    address passenger,
-    uint256 amount,
-    bool paid
-  );
+  event InsuranceBought(address, string, uint256, address, uint256, bool);
+  event FlightRegistered(address, string, uint256);
+  event FlightStatusProcessed(address, string, uint256, uint8, bool, bool);
 
   /**
    * @dev Constructor
@@ -188,7 +198,16 @@ contract FlightSuretyData {
     return airlines[airlineAddress].funds;
   }
 
-  event TestEmit(address airlineAddress, string flight, uint256 timestamp, address passenger);
+  function isFlightRegistered(
+    address airlineAddress,
+    string memory flight,
+    uint256 timestamp
+  ) external view returns (bool) {
+    bytes32 flightKey = getFlightKey(airlineAddress, flight, timestamp);
+    Flight memory flightInfo = flights[flightKey];
+
+    return flightInfo.airline != address(0);
+  }
 
   function getInsuranceInfo(
     address airlineAddress,
@@ -284,9 +303,63 @@ contract FlightSuretyData {
   }
 
   /**
+   * @dev Register a future flight for insuring.
+   *
+   */
+  function registerFlight(
+    address airlineAddress,
+    string memory flight,
+    uint256 timestamp
+  ) external requireIsOperational requireCallerAuthorized requireAddressValid(airlineAddress) {
+    bytes32 flightKey = getFlightKey(airlineAddress, flight, timestamp);
+    flights[flightKey] = Flight({
+      airline: airlineAddress,
+      flight: flight,
+      timestamp: timestamp,
+      statusCode: STATUS_CODE_UNKNOWN
+    });
+
+    emit FlightRegistered(airlineAddress, flight, timestamp);
+  }
+
+  /**
+   * @dev Called after oracle has updated flight status
+   *
+   */
+  function processFlightStatus(
+    address airlineAddress,
+    string memory flight,
+    uint256 timestamp,
+    uint8 statusCode
+  ) external requireIsOperational requireCallerAuthorized {
+    bytes32 flightKey = getFlightKey(airlineAddress, flight, timestamp);
+
+    bool isStatusUpdated = false;
+    bool isLateAirline = false;
+    if (flights[flightKey].statusCode == STATUS_CODE_UNKNOWN) {
+      isStatusUpdated = true;
+      flights[flightKey].statusCode = statusCode;
+
+      if (statusCode == STATUS_CODE_LATE_AIRLINE) {
+        isLateAirline = true;
+        creditInsurees();
+      }
+    }
+
+    emit FlightStatusProcessed(
+      airlineAddress,
+      flight,
+      timestamp,
+      statusCode,
+      isStatusUpdated,
+      isLateAirline
+    );
+  }
+
+  /**
    *  @dev Credits payouts to insurees
    */
-  function creditInsurees() external pure {}
+  function creditInsurees() internal pure {}
 
   /**
    *  @dev Transfers eligible payout funds to insuree

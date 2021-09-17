@@ -155,6 +155,68 @@ contract("Flight Surety Tests", async (accounts) => {
     );
   });
 
+  it("(flight) can't register flight if airline is not funded enough", async () => {
+    let errMsgBeforeAirlineFunded = "";
+    try {
+      await config.flightSuretyApp.registerFlight("NH097", CURRENT_TIME, { from: AIRLINE_5 });
+    } catch (e) {
+      errMsgBeforeAirlineFunded = e.message;
+    }
+    assert.equal(
+      errMsgBeforeAirlineFunded.includes("Airline is not available"),
+      true,
+      "Airline should be funded enough before register flight"
+    );
+  });
+
+  it("(flight) can register flight if airline is funded enough", async () => {
+    await config.flightSuretyApp.registerFlight("JL097", CURRENT_TIME, { from: AIRLINE_2 });
+    const isRegistered = await config.flightSuretyData.isFlightRegistered.call(
+      AIRLINE_2,
+      "JL097",
+      CURRENT_TIME
+    );
+
+    assert.equal(
+      isRegistered,
+      true,
+      "Airline should be able to register flight after funded enough"
+    );
+  });
+
+  it("(flight) can't register flight which is existed", async () => {
+    let errMsgFlightDuplicated = "";
+    try {
+      await config.flightSuretyApp.registerFlight("JL097", CURRENT_TIME, { from: AIRLINE_2 });
+    } catch (e) {
+      errMsgFlightDuplicated = e.message;
+    }
+    assert.equal(
+      errMsgFlightDuplicated.includes("Flight has already been registered"),
+      true,
+      "Flight should be registered only once"
+    );
+  });
+
+  it("(insurance) can't buy before flight registered", async () => {
+    let errMsgBeforeFlightRegistered = "";
+    try {
+      await config.flightSuretyApp.buyInsurance(AIRLINE_2, "JL100", CURRENT_TIME, {
+        from: AIRLINE_2,
+        value: ETHER_1,
+        gasPrice: 0,
+      });
+    } catch (e) {
+      errMsgBeforeFlightRegistered = e.message;
+    }
+
+    assert.equal(
+      errMsgBeforeFlightRegistered.includes("Flight is not exist"),
+      true,
+      "Flight must be registered before provide insurance"
+    );
+  });
+
   it("(insurance) can't buy insurance for airlines that are not funded", async () => {
     // try to buy insurance for airline which is not funded enough
     let errMsgBeforeAirlineFunded = "";
@@ -179,6 +241,7 @@ contract("Flight Surety Tests", async (accounts) => {
       value: ETHER_10,
       gasPrice: 0,
     });
+    await config.flightSuretyApp.registerFlight("NH097", CURRENT_TIME, { from: AIRLINE_5 });
     await config.flightSuretyApp.buyInsurance(AIRLINE_5, "NH097", CURRENT_TIME, {
       from: PASSENGER_2,
       value: ETHER_1,

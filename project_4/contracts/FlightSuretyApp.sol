@@ -18,14 +18,6 @@ contract FlightSuretyApp {
   /********************************************************************************************/
   bool private operational = true;
 
-  // Flight status codees
-  uint8 private constant STATUS_CODE_UNKNOWN = 0;
-  uint8 private constant STATUS_CODE_ON_TIME = 10;
-  uint8 private constant STATUS_CODE_LATE_AIRLINE = 20;
-  uint8 private constant STATUS_CODE_LATE_WEATHER = 30;
-  uint8 private constant STATUS_CODE_LATE_TECHNICAL = 40;
-  uint8 private constant STATUS_CODE_LATE_OTHER = 50;
-
   uint8 private constant REGISTERED_COUNT_NEED_CONSENSUS = 4;
   uint256 private constant MIN_FUND_VALUE = 10 ether;
   uint256 private constant MAX_INSURANCE_VALUE = 1 ether;
@@ -75,6 +67,30 @@ contract FlightSuretyApp {
 
   modifier requireAirlineFunded(address airlineAddress) {
     require(flightSuretyData.isAirlineAvailable(airlineAddress), "Airline is not available");
+    _;
+  }
+
+  modifier requireFlightNotRegistered(
+    address airlineAddress,
+    string memory flight,
+    uint256 timestamp
+  ) {
+    require(
+      !flightSuretyData.isFlightRegistered(airlineAddress, flight, timestamp),
+      "Flight has already been registered"
+    );
+    _;
+  }
+
+  modifier requireFlightRegistered(
+    address airlineAddress,
+    string memory flight,
+    uint256 timestamp
+  ) {
+    require(
+      flightSuretyData.isFlightRegistered(airlineAddress, flight, timestamp),
+      "Flight is not exist"
+    );
     _;
   }
 
@@ -189,7 +205,13 @@ contract FlightSuretyApp {
     address airlineAddress,
     string memory flight,
     uint256 timestamp
-  ) external payable requireIsOperational requireAirlineFunded(airlineAddress) {
+  )
+    external
+    payable
+    requireIsOperational
+    requireAirlineFunded(airlineAddress)
+    requireFlightRegistered(airlineAddress, flight, timestamp)
+  {
     require(
       msg.value > 0 && msg.value <= MAX_INSURANCE_VALUE,
       "Insurance fee must be lower than 1 ether"
@@ -210,7 +232,14 @@ contract FlightSuretyApp {
    * @dev Register a future flight for insuring.
    *
    */
-  function registerFlight() external pure {}
+  function registerFlight(string memory flight, uint256 timestamp)
+    external
+    requireIsOperational
+    requireAirlineFunded(msg.sender)
+    requireFlightNotRegistered(msg.sender, flight, timestamp)
+  {
+    flightSuretyData.registerFlight(msg.sender, flight, timestamp);
+  }
 
   /**
    * @dev Called after oracle has updated flight status
@@ -221,7 +250,9 @@ contract FlightSuretyApp {
     string memory flight,
     uint256 timestamp,
     uint8 statusCode
-  ) internal pure {}
+  ) internal requireIsOperational {
+    flightSuretyData.processFlightStatus(airlineAddress, flight, timestamp, statusCode);
+  }
 
   // Generate a request for oracles to fetch flight information
   function fetchFlightStatus(
@@ -394,6 +425,25 @@ abstract contract FlightSuretyData {
   function fundAirline(address airlineAddress, uint256 funds) external virtual;
 
   // flights
+  function isFlightRegistered(
+    address airlineAddress,
+    string memory flight,
+    uint256 timestamp
+  ) external virtual returns (bool);
+
+  function registerFlight(
+    address airlineAddress,
+    string memory flight,
+    uint256 timestamp
+  ) external virtual;
+
+  function processFlightStatus(
+    address airlineAddress,
+    string memory flight,
+    uint256 timestamp,
+    uint8 statusCode
+  ) external virtual;
+
   function buyInsurance(
     address airlineAddress,
     string memory flight,
