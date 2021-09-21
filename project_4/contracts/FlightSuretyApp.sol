@@ -228,6 +228,10 @@ contract FlightSuretyApp {
     emit InsuranceBought(airlineAddress, flight, timestamp, msg.sender, msg.value);
   }
 
+  function withdrawCompensation() external requireIsOperational {
+    flightSuretyData.pay(msg.sender);
+  }
+
   /**
    * @dev Register a future flight for insuring.
    *
@@ -451,4 +455,6 @@ abstract contract FlightSuretyData {
     address passenger,
     uint256 insuranceAmount
   ) external virtual;
+
+  function pay(address passenger) external virtual;
 }

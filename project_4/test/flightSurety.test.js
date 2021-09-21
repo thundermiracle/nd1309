@@ -248,7 +248,7 @@ contract("Flight Surety Tests", async (accounts) => {
       gasPrice: 0,
     });
 
-    const { amount, paid } = await config.flightSuretyData.getInsuranceInfo.call(
+    const { amount, isCredited } = await config.flightSuretyData.getInsuranceInfo.call(
       AIRLINE_5,
       "NH097",
       CURRENT_TIME,
@@ -257,6 +257,6 @@ contract("Flight Surety Tests", async (accounts) => {
 
     // ASSERT
     assert.equal(amount, ETHER_1, "Insurance is bought successfully");
-    assert.equal(paid, false, "Insurance is not paid");
+    assert.equal(isCredited, false, "Insurance is not credited");
   });
 });

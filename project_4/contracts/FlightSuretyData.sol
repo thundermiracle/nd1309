@@ -47,9 +47,13 @@ contract FlightSuretyData {
   struct Insurance {
     address passenger;
     uint256 amount;
-    bool paid;
+    bool isCredited;
   }
   mapping(bytes32 => Insurance[]) private flightInsurances;
+
+  // 150%
+  uint256 private constant COMPENSATION_FACTOR = 150;
+  mapping(address => uint256) private passengerCompensations;
 
   /********************************************************************************************/
   /*                                       EVENT DEFINITIONS                                  */
@@ -61,6 +65,8 @@ contract FlightSuretyData {
   event InsuranceBought(address, string, uint256, address, uint256, bool);
   event FlightRegistered(address, string, uint256);
   event FlightStatusProcessed(address, string, uint256, uint8, bool, bool);
+  event InsureeCredited(address, string, uint256, address, uint256);
+  event CompensationWithdrawn(address, uint256);
 
   /**
    * @dev Constructor
@@ -214,17 +220,21 @@ contract FlightSuretyData {
     string memory flight,
     uint256 timestamp,
     address passenger
-  ) external view returns (uint256 amount, bool paid) {
+  ) external view returns (uint256 amount, bool isCredited) {
     bytes32 flightKey = getFlightKey(airlineAddress, flight, timestamp);
     Insurance[] memory allInsurances = flightInsurances[flightKey];
 
     for (uint256 ind = 0; ind < allInsurances.length; ind++) {
       if (allInsurances[ind].passenger == passenger) {
-        return (allInsurances[ind].amount, allInsurances[ind].paid);
+        return (allInsurances[ind].amount, allInsurances[ind].isCredited);
       }
     }
 
     return (0, false);
+  }
+
+  function getCompensationAmount(address passenger) external view returns (uint256) {
+    return passengerCompensations[passenger];
   }
 
   /********************************************************************************************/
@@ -298,7 +308,7 @@ contract FlightSuretyData {
       timestamp,
       passengerInsurance.passenger,
       passengerInsurance.amount,
-      passengerInsurance.paid
+      passengerInsurance.isCredited
     );
   }
 
@@ -342,7 +352,7 @@ contract FlightSuretyData {
 
       if (statusCode == STATUS_CODE_LATE_AIRLINE) {
         isLateAirline = true;
-        creditInsurees();
+        creditInsurees(airlineAddress, flight, timestamp);
       }
     }
 
@@ -359,13 +369,56 @@ contract FlightSuretyData {
   /**
    *  @dev Credits payouts to insurees
    */
-  function creditInsurees() internal pure {}
+  function creditInsurees(
+    address airlineAddress,
+    string memory flight,
+    uint256 timestamp
+  ) internal requireIsOperational {
+    bytes32 flightKey = getFlightKey(airlineAddress, flight, timestamp);
+    Insurance[] memory insurances = flightInsurances[flightKey];
+
+    for (uint256 index = 0; index < insurances.length; index++) {
+      Insurance memory insurance = insurances[index];
+
+      // get compensation price for every passenger who bought the insurance
+      // compensation price = insuranceAmount * 150%
+      uint256 compensationPrice = insurance.amount.mul(COMPENSATION_FACTOR).div(100);
+      insurance.isCredited = true;
+
+      // push all compensations to compensation info list
+      passengerCompensations[insurance.passenger] = passengerCompensations[insurance.passenger].add(
+        compensationPrice
+      );
+
+      // calculate total amount of compensations paid for late arrival
+      airlines[airlineAddress].insurancePaid = airlines[airlineAddress].insurancePaid.add(
+        compensationPrice
+      );
+
+      emit InsureeCredited(
+        airlineAddress,
+        flight,
+        timestamp,
+        insurance.passenger,
+        compensationPrice
+      );
+    }
+  }
 
   /**
    *  @dev Transfers eligible payout funds to insuree
    *
    */
-  function pay() external pure {}
+  function pay(address passenger) external requireIsOperational requireCallerAuthorized {
+    require(passengerCompensations[passenger] > 0, "No compensation is available for withdrawing");
+
+    uint256 amount = passengerCompensations[passenger];
+    passengerCompensations[passenger] = 0;
+
+    payable(passenger).transfer(amount);
+
+    emit CompensationWithdrawn(passenger, amount);
+  }
 
   /**
    * @dev Initial funding for the insurance. Unless there are too many delayed flights
