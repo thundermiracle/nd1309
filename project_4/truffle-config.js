@@ -5,12 +5,13 @@ const mnemonic = fs.readFileSync(".secret").toString().trim();
 
 module.exports = {
   networks: {
-    development: {
+    develop: {
       provider: function () {
         return new HDWalletProvider(mnemonic, "http://127.0.0.1:9545/", 0, 50);
       },
       network_id: "*",
       gas: 9999999,
+      accounts: 50,
     },
   },
   compilers: {
