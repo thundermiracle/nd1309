@@ -1,4 +1,5 @@
 import Web3 from "web3";
+import FlightSuretyData from "../../build/contracts/FlightSuretyData.json";
 import FlightSuretyApp from "../../build/contracts/FlightSuretyApp.json";
 import Config from "./config.json";
 
@@ -6,6 +7,7 @@ export default class Contract {
   constructor(network, callback) {
     let config = Config[network];
     this.web3 = new Web3(new Web3.providers.HttpProvider(config.url));
+    this.FlightSuretyData = new this.web3.eth.Contract(FlightSuretyData.abi, config.dataAddress);
     this.flightSuretyApp = new this.web3.eth.Contract(FlightSuretyApp.abi, config.appAddress);
     this.initialize(callback);
     this.owner = null;
@@ -14,17 +16,17 @@ export default class Contract {
   }
 
   initialize(callback) {
-    this.web3.eth.getAccounts((error, accts) => {
-      this.owner = accts[0];
+    this.web3.eth.getAccounts((error, accounts) => {
+      this.owner = accounts[0];
 
       let counter = 1;
 
       while (this.airlines.length < 5) {
-        this.airlines.push(accts[counter++]);
+        this.airlines.push(accounts[counter++]);
       }
 
       while (this.passengers.length < 5) {
-        this.passengers.push(accts[counter++]);
+        this.passengers.push(accounts[counter++]);
       }
 
       callback();
