@@ -1,5 +1,6 @@
 import Web3 from "web3";
-import express from "express";
+import express, { Router } from "express";
+import cors from "cors";
 import FlightSuretyData from "../../build/contracts/FlightSuretyData.json";
 import FlightSuretyApp from "../../build/contracts/FlightSuretyApp.json";
 import Config from "./config.json";
@@ -9,10 +10,12 @@ const web3 = new Web3(new Web3.providers.WebsocketProvider(config.url.replace("h
 web3.eth.defaultAccount = web3.eth.accounts[0];
 const flightSuretyData = new web3.eth.Contract(FlightSuretyData.abi, config.dataAddress);
 const flightSuretyApp = new web3.eth.Contract(FlightSuretyApp.abi, config.appAddress);
-const oracles = {};
+let AIRLINES = [];
+const ORACLES = {};
 const gas = 450000;
 const ORACLE_PRICE = web3.utils.toWei("1", "ether");
 const AIRLINE_FUND = web3.utils.toWei("10", "ether");
+const AIRLINE_NAMES = ["ANA", "JAL", "SKY", "SFJ", "ADO", "SNJ"];
 const FLIGHT_INFO = [
   [
     { flightNo: "NH6", flightTime: new Date("2021-03-24 09:00").getTime() },
@@ -104,6 +107,8 @@ async function fundAirline(newAirline) {
 }
 
 async function initAirlines(accounts) {
+  AIRLINES = accounts;
+
   const [firstAirline] = accounts;
 
   // As first airline is registered when deploying, fund 10 ether is needed only
@@ -163,7 +168,7 @@ async function initOracles(accounts) {
       });
       const indexes = await flightSuretyApp.methods.getMyIndexes().call({ from: accounts[index] });
 
-      oracles[accounts[index]] = indexes;
+      ORACLES[accounts[index]] = indexes;
       console.log(accounts[index], ":", indexes);
     } catch (err) {
       console.error("RegisterOracle Failed:", err.message);
@@ -185,7 +190,7 @@ flightSuretyApp.events.OracleRequest(
       const { index, airlineAddress, flight, timestamp } = event.returnValues;
       const statusCode = generateRandomStatus();
 
-      Object.entries(oracles).forEach(async ([oracleAddress, indexes]) => {
+      Object.entries(ORACLES).forEach(async ([oracleAddress, indexes]) => {
         if (indexes.includes(index)) {
           await flightSuretyApp.methods
             .submitOracleResponse(index, airlineAddress, flight, timestamp, statusCode)
@@ -200,10 +205,41 @@ flightSuretyApp.events.OracleRequest(
   }
 );
 
+/** ****************************************************************
+ * Airline Routes
+ **************************************************************** */
+const airlineRoutes = Router();
+airlineRoutes.get("/", (_, res) => {
+  const airlineInfo = AIRLINES.map((airline, ind) => ({
+    airline,
+    name: AIRLINE_NAMES[ind],
+  }));
+
+  res.json(airlineInfo);
+});
+/************************************************************** */
+
+/** ****************************************************************
+ * Flight Routes
+ **************************************************************** */
+const flightRoutes = Router();
+flightRoutes.get("/", (_, res) => {
+  res.json(FLIGHT_INFO);
+});
+/************************************************************** */
+
 const app = express();
+app.use(
+  cors({
+    origin: "http://localhost:8000",
+    optionsSuccessStatus: 200,
+  })
+);
 
 init().then(() => {
-  app.get("/api", (req, res) => {
+  app.use("/api/airlines", airlineRoutes);
+  app.use("/api/flights", flightRoutes);
+  app.get("/api", (_, res) => {
     res.send({
       message: "An API for use with your Dapp!",
     });

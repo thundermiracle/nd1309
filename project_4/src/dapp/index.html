@@ -13,6 +13,14 @@
 
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
         <a class="navbar-brand" href="#">FlightSurety</a>
+        <div class="row flex-fill">
+
+            <div class="col-sm-11 field text-white">
+                <label class="text-white mr-3"> USER:[920f2adde45e5733392c2dbc10fc6ac89af6ff3467ecf6acc243b9a2e2adabc7]
+                </label>Operational Status
+            </div>
+            <div id="operationStatus" class="col-sm-1 field-value">Loading...</div>
+        </div>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
             aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -24,9 +32,17 @@
         <div id="display-wrapper" class="top-20">
         </div>
         <div class="row top-20">
+            <div class="col-md-1 text-info font-weight-bold">AIRLINE</div>
+            <div class="col-md-2 text-info font-weight-bold">FLIGHT</div>
+            <div class="col-md-4 text-info font-weight-bold">DEPARTURE TIME</div>
+            <div class="col-md-2 text-info font-weight-bold">STATUS</div>
+            <div class="col-md-3 text-info font-weight-bold">INSURANCE</div>
+        </div>
+        <div id="flight-info"></div>
+        <!-- <div class="row top-20">
             <label class="form">Flight</label> <input type="text" id="flight-number">
             <btn class="btn btn-primary" id="submit-oracle">Submit to Oracles</btn>
-        </div>
+        </div> -->
     </main>
 
 </body>

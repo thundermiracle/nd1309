@@ -215,6 +215,17 @@ contract FlightSuretyData {
     return flightInfo.airline != address(0);
   }
 
+  function getFlightStatus(
+    address airlineAddress,
+    string memory flight,
+    uint256 timestamp
+  ) external view returns (uint8) {
+    bytes32 flightKey = getFlightKey(airlineAddress, flight, timestamp);
+    Flight memory flightInfo = flights[flightKey];
+
+    return flightInfo.statusCode;
+  }
+
   function getInsuranceInfo(
     address airlineAddress,
     string memory flight,

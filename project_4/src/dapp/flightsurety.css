@@ -40,3 +40,8 @@ label.form {
 input {
   margin-right: 30px;
 }
+
+.flight {
+  align-items: center;
+  min-height: 50px;
+}
