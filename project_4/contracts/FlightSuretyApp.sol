@@ -214,7 +214,7 @@ contract FlightSuretyApp {
   {
     require(
       msg.value > 0 && msg.value <= MAX_INSURANCE_VALUE,
-      "Insurance fee must be lower than 1 ether"
+      "Insurance fee must be less than 1 ether"
     );
 
     // transfer funds to Data contract

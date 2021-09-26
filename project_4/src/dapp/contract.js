@@ -3,6 +3,7 @@ import FlightSuretyData from "../../build/contracts/FlightSuretyData.json";
 import FlightSuretyApp from "../../build/contracts/FlightSuretyApp.json";
 import Config from "./config.json";
 
+const ETHER_1 = Web3.utils.toWei("1", "ether");
 export default class Contract {
   constructor(network, callback) {
     let config = Config[network];
@@ -38,16 +39,30 @@ export default class Contract {
     self.flightSuretyApp.methods.isOperational().call({ from: self.owner }, callback);
   }
 
-  fetchFlightStatus(flight, callback) {
+  fetchFlightStatus(airline, flight, timestamp, callback) {
     let self = this;
     let payload = {
-      airline: self.airlines[0],
-      flight: flight,
-      timestamp: Math.floor(Date.now() / 1000),
+      airline,
+      flight,
+      timestamp,
     };
     self.flightSuretyApp.methods
       .fetchFlightStatus(payload.airline, payload.flight, payload.timestamp)
       .send({ from: self.owner }, (error, result) => {
+        callback(error, payload);
+      });
+  }
+
+  purchaseInsurance(airline, flight, timestamp, passenger, callback) {
+    let self = this;
+    let payload = {
+      airline,
+      flight,
+      timestamp,
+    };
+    self.flightSuretyApp.methods
+      .buyInsurance(payload.airline, payload.flight, payload.timestamp)
+      .send({ from: passenger, value: ETHER_1, gas: 450000 }, (error, result) => {
         callback(error, payload);
       });
   }

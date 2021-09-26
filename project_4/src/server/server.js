@@ -13,6 +13,7 @@ const flightSuretyApp = new web3.eth.Contract(FlightSuretyApp.abi, config.appAdd
 let AIRLINES = [];
 const ORACLES = {};
 const gas = 450000;
+const INSURANCE_PRICE = web3.utils.toWei("0.5", "ether");
 const ORACLE_PRICE = web3.utils.toWei("1", "ether");
 const AIRLINE_FUND = web3.utils.toWei("10", "ether");
 const AIRLINE_NAMES = ["ANA", "JAL", "SKY", "SFJ", "ADO", "SNJ"];
@@ -191,6 +192,7 @@ flightSuretyApp.events.OracleRequest(
       const statusCode = generateRandomStatus();
 
       Object.entries(ORACLES).forEach(async ([oracleAddress, indexes]) => {
+        console.log("OracleRequest", indexes, index);
         if (indexes.includes(index)) {
           await flightSuretyApp.methods
             .submitOracleResponse(index, airlineAddress, flight, timestamp, statusCode)
@@ -204,6 +206,26 @@ flightSuretyApp.events.OracleRequest(
     }
   }
 );
+
+async function getFlightStatus(airlineAddress, flight, timestamp) {
+  const statusCode = await flightSuretyData.methods
+    .getFlightStatus(airlineAddress, flight, timestamp)
+    .call();
+  return statusCode;
+}
+
+async function getInsuranceInfo(airlineAddress, flight, timestamp, passenger) {
+  const insuranceInfo = await flightSuretyData.methods
+    .getInsuranceInfo(airlineAddress, flight, timestamp, passenger)
+    .call();
+  return insuranceInfo;
+}
+
+async function buyInsurance(airlineAddress, flight, timestamp, passenger) {
+  await flightSuretyApp.methods
+    .buyInsurance(airlineAddress, flight, timestamp)
+    .send({ from: passenger, value: INSURANCE_PRICE, gas: 450000 });
+}
 
 /** ****************************************************************
  * Airline Routes
@@ -226,9 +248,31 @@ const flightRoutes = Router();
 flightRoutes.get("/", (_, res) => {
   res.json(FLIGHT_INFO);
 });
+flightRoutes.get("/status", async (req, res) => {
+  const statusCode = await getFlightStatus(
+    req.query.airline,
+    req.query.flight,
+    req.query.timestamp
+  );
+  res.json(statusCode);
+});
+flightRoutes.get("/insuranceInfo", async (req, res) => {
+  const insuranceInfo = await getInsuranceInfo(
+    req.query.airline,
+    req.query.flight,
+    req.query.timestamp,
+    req.query.passenger
+  );
+  res.json(insuranceInfo);
+});
+flightRoutes.post("/purchaseInsurance", async (req, res) => {
+  await buyInsurance(req.body.airline, req.body.flight, req.body.timestamp, req.body.passenger);
+  res.json("ok");
+});
 /************************************************************** */
 
 const app = express();
+app.use(express.json());
 app.use(
   cors({
     origin: "http://localhost:8000",
