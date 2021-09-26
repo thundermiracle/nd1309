@@ -39,12 +39,23 @@ const FLIGHT_STATUS = {
     });
 
     Array.from(document.getElementsByClassName("request-flight-status")).forEach((reqFSBtn) => {
-      reqFSBtn.onclick = () => {
+      reqFSBtn.onclick = async () => {
         const domRootId = reqFSBtn.dataset.id;
         const [airline, flight, timestamp] = domRootId.split("_");
-        contract.fetchFlightStatus(airline, flight, timestamp, (error, result) => {
+        contract.fetchFlightStatus(airline, flight, timestamp, async (error, result) => {
           console.log(error, result);
+          await refreshFlightStatus({ domRootId, airline, flight, timestamp });
         });
+        // await fetch(`${HOST}/api/flights/fetchFlightStatus`, {
+        //   method: "POST",
+        //   mode: "cors",
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        //   body: JSON.stringify({ airline, flight, timestamp }),
+        // });
+
+        // await refreshFlightStatus({ domRootId, airline, flight, timestamp });
       };
     });
 
@@ -61,9 +72,8 @@ const FLIGHT_STATUS = {
           },
           body: JSON.stringify({ airline, flight, timestamp, passenger: USER }),
         });
-        // contract.purchaseInsurance(airline, flight, timestamp, USER, (error, result) => {
-        //   console.log(error, result);
-        // });
+
+        await refreshInsuranceInfo({ domRootId, airline, flight, timestamp });
       };
     });
   });

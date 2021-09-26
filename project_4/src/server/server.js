@@ -227,6 +227,10 @@ async function buyInsurance(airlineAddress, flight, timestamp, passenger) {
     .send({ from: passenger, value: INSURANCE_PRICE, gas: 450000 });
 }
 
+async function fetchFlightStatus(airlineAddress, flight, timestamp) {
+  await flightSuretyApp.methods.fetchFlightStatus(airlineAddress, flight, timestamp).call();
+}
+
 /** ****************************************************************
  * Airline Routes
  **************************************************************** */
@@ -267,6 +271,10 @@ flightRoutes.get("/insuranceInfo", async (req, res) => {
 });
 flightRoutes.post("/purchaseInsurance", async (req, res) => {
   await buyInsurance(req.body.airline, req.body.flight, req.body.timestamp, req.body.passenger);
+  res.json("ok");
+});
+flightRoutes.post("/fetchFlightStatus", async (req, res) => {
+  await fetchFlightStatus(req.body.airline, req.body.flight, req.body.timestamp);
   res.json("ok");
 });
 /************************************************************** */
