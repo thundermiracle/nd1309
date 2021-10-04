@@ -164,6 +164,11 @@
     "@babel/helper-validator-identifier" "^7.14.9"
     to-fast-properties "^2.0.0"
 
+"@openzeppelin/contracts@^4.3.2":
+  version "4.3.2"
+  resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-4.3.2.tgz#ff80affd6d352dbe1bbc5b4e1833c41afd6283b6"
+  integrity sha512-AybF1cesONZStg5kWf6ao9OlqTZuPqddvprc0ky7lrUVOjXeKpmQ2Y9FK+6ygxasb+4aic4O5pneFBfwVsRRRg==
+
 "@truffle/hdwallet-provider@^1.5.0":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/@truffle/hdwallet-provider/-/hdwallet-provider-1.5.0.tgz#f27158753bfb184389358ca43ea72aeee02a31ac"
@@ -320,6 +325,20 @@ after@0.8.2:
   version "0.8.2"
   resolved "https://registry.yarnpkg.com/after/-/after-0.8.2.tgz#fedb394f9f0e02aa9768e702bda23b505fae7e1f"
   integrity sha1-/ts5T58OAqqXaOcCvaI7UF+ufh8=
+
+ajax-caching@^0.1.0:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/ajax-caching/-/ajax-caching-0.1.2.tgz#fdc9abfde3671dd0074b645965b5e072865f596a"
+  integrity sha512-sR4BataOHBqyhzfjhY6XlmaL6ifysUn1YwoN2PoToKwB0vGZ0G8opPMiBwQfIZ4MGc1YX4M3UlZzGnXcsIE88Q==
+  dependencies:
+    kv-idb "^1.1.0"
+
+ajax-caching@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/ajax-caching/-/ajax-caching-0.2.0.tgz#8efd67704d117b52634f1ccb86dbc88ca00570b3"
+  integrity sha512-WUDWUS1V/I3qquf4fxZECiaAbtN7apPzfkpfyvE4nBIT6FInwYT8smrmDJOL/FqQAwGQOJh4gEseBg0xcOj7Qw==
+  dependencies:
+    kv-idb "^1.1.0"
 
 ajv@^6.12.3:
   version "6.12.6"
@@ -578,7 +597,7 @@ browser-sync-ui@^2.27.5:
     socket.io-client "^2.4.0"
     stream-throttle "^0.1.3"
 
-browser-sync@^2.24.4:
+browser-sync@^2.26.13:
   version "2.27.5"
   resolved "https://registry.yarnpkg.com/browser-sync/-/browser-sync-2.27.5.tgz#9e547645b045f8780d775dc2cc5409357bec6c08"
   integrity sha512-0GMEPDqccbTxwYOUGCk5AZloDj9I/1eDZCLXUKXu7iBJPznGGOnMHs88mrhaFL0fTA0R23EmsXX9nLZP+k5YzA==
@@ -802,15 +821,15 @@ command-exists@^1.2.8:
   resolved "https://registry.yarnpkg.com/command-exists/-/command-exists-1.2.9.tgz#c50725af3808c8ab0260fd60b01fbfa25b954f69"
   integrity sha512-LTQ/SGc+s0Xc0Fu5WaKnR0YiygZkm9eKFvyS+fRsU7/ZWFF8ykFM6Pc9aCVf1+xasOOZpO3BAVgVrKvsqKHV7w==
 
-commander@3.0.2:
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-3.0.2.tgz#6837c3fb677ad9933d1cfba42dd14d5117d6b39e"
-  integrity sha512-Gar0ASD4BDyKC4hl4DwHqDrmvjoxWKZigVnAbn5H1owvm4CxCPdb0HQDehwNYMJpla5+M2tPmPARzhtYuwpHow==
-
 commander@^2.2.0:
   version "2.20.3"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
   integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
+
+commander@^8.1.0:
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-8.2.0.tgz#37fe2bde301d87d47a53adeff8b5915db1381ca8"
+  integrity sha512-LLKxDvHeL91/8MIyTAD5BFMNtoIwztGPMiM/7Bl8rIPmHCZXRxmSWr91h57dpOpnQ6jIUqEWdXE/uBYMfiVZDA==
 
 component-bind@1.0.0:
   version "1.0.0"
@@ -837,12 +856,12 @@ concat-map@0.0.1:
   resolved "https://registry.yarnpkg.com/concat-map/-/concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b"
   integrity sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=
 
-connect-history-api-fallback@^1, connect-history-api-fallback@^1.2.0:
+connect-history-api-fallback@^1, connect-history-api-fallback@^1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/connect-history-api-fallback/-/connect-history-api-fallback-1.6.0.tgz#8b32089359308d111115d81cad3fceab888f97bc"
   integrity sha512-e54B99q/OUoH64zYYRf3HBP5z24G38h5D3qXu23JGRoigpX5Ss4r9ZnDk3g0Z8uQC2x2lPaJ+UlWBc1ZWBWdLg==
 
-connect-logger@0.0.1:
+connect-logger@^0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/connect-logger/-/connect-logger-0.0.1.tgz#4d999978a1d20bb4608e7cd434d741652255174b"
   integrity sha1-TZmZeKHSC7RgjnzUNNdBZSJVF0s=
@@ -1433,7 +1452,7 @@ find-up@^4.1.0:
     locate-path "^5.0.0"
     path-exists "^4.0.0"
 
-follow-redirects@^1.0.0, follow-redirects@^1.14.0:
+follow-redirects@^1.0.0, follow-redirects@^1.12.1, follow-redirects@^1.14.0:
   version "1.14.4"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.14.4.tgz#838fdf48a8bbdd79e52ee51fb1c94e3ed98b9379"
   integrity sha512-zwGkiSXC1MUJG/qmeIFH2HBJx9u0V46QGUe3YR1fXG8bXQxq7fLj0RjLZQ5nubr9qNJUZrH+xUcwXEoXNpfS+g==
@@ -1895,7 +1914,7 @@ klaw@^1.0.0:
   optionalDependencies:
     graceful-fs "^4.1.9"
 
-kv-idb@^1.0.0:
+kv-idb@^1.0.0, kv-idb@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/kv-idb/-/kv-idb-1.1.0.tgz#5773dc7c7df39f4a6470fb708607babe04b02427"
   integrity sha512-H1qsvb/rZcJX573DGonc6l1hNG283JfnmBck83aiLmjI1nwaiudUinjzaWmwa8QZkjHsMUDkXm4D1k4ewjlo/g==
@@ -1955,16 +1974,16 @@ limiter@^1.0.5:
   resolved "https://registry.yarnpkg.com/limiter/-/limiter-1.1.5.tgz#8f92a25b3b16c6131293a0cc834b4a838a2aa7c2"
   integrity sha512-FWWMIEOxz3GwUI4Ts/IvgVy6LPvoMPgjMdQ185nN6psJyBJ4yOpzqm695/h5umdLJg2vW3GR5iG11MAkR2AzJA==
 
-lite-server@2.4.0:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/lite-server/-/lite-server-2.4.0.tgz#e3e122885836b168895d7b6b4eca06047d204c0d"
-  integrity sha512-Vo06tHpXrqm37i6T7tVdq5PSbrFmvQRw64+dlFXdh1tltv6KCvpE+xzXz2+x6KWJ8ja+GgwSy4P13GUWyhaDHQ==
+lite-server@2.6.1:
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/lite-server/-/lite-server-2.6.1.tgz#27281022c77c99673d0a820b998bc7e125cdbaa0"
+  integrity sha512-d3oyB/C8AU4EwYQHlLxcu6vTQDnCaLb81v1KKNYABmFS5oeJ11A+YxlqtpbTclID1AFddJfcB5klf0q98vYIMw==
   dependencies:
-    browser-sync "^2.24.4"
-    connect-history-api-fallback "^1.2.0"
-    connect-logger "0.0.1"
-    lodash "^4.11.1"
-    minimist "1.2.0"
+    browser-sync "^2.26.13"
+    connect-history-api-fallback "^1.6.0"
+    connect-logger "^0.0.1"
+    lodash "^4.17.20"
+    minimist "^1.2.5"
 
 localtunnel@^2.0.1:
   version "2.0.2"
@@ -1998,7 +2017,7 @@ lodash.isfinite@^3.3.2:
   resolved "https://registry.yarnpkg.com/lodash.isfinite/-/lodash.isfinite-3.3.2.tgz#fb89b65a9a80281833f0b7478b3a5104f898ebb3"
   integrity sha1-+4m2WpqAKBgz8LdHizpRBPiY67M=
 
-lodash@^4.11.1, lodash@^4.17.10, lodash@^4.17.14:
+lodash@^4.17.10, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.20:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
@@ -2097,10 +2116,10 @@ minimatch@^3.0.2, minimatch@^3.0.4:
   dependencies:
     brace-expansion "^1.1.7"
 
-minimist@1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.0.tgz#a35008b20f41383eec1fb914f4cd5df79a264284"
-  integrity sha1-o1AIsg9BOD7sH7kU9M1d95omQoQ=
+minimist@^1.2.5:
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.5.tgz#67d66014b66a6a8aaa0c083c5fd58df4e4e97602"
+  integrity sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==
 
 mitt@^1.1.3:
   version "1.2.0"
@@ -2198,11 +2217,6 @@ openurl@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/openurl/-/openurl-1.1.1.tgz#3875b4b0ef7a52c156f0db41d4609dbb0f94b387"
   integrity sha1-OHW0sO96UsFW8NtB1GCduw+Us4c=
-
-openzeppelin-solidity@^2.2.0:
-  version "2.5.1"
-  resolved "https://registry.yarnpkg.com/openzeppelin-solidity/-/openzeppelin-solidity-2.5.1.tgz#1cdcce30c4c6a7b6625dab62ccd0440a813ab597"
-  integrity sha512-oCGtQPLOou4su76IMr4XXJavy9a8OZmAXeUZ8diOdFznlL/mlkIlYr7wajqCzH4S47nlKPS7m0+a2nilCTpVPQ==
 
 opn@5.3.0:
   version "5.3.0"
@@ -2474,6 +2488,30 @@ requires-port@^1.0.0:
   resolved "https://registry.yarnpkg.com/requires-port/-/requires-port-1.0.0.tgz#925d2601d39ac485e091cf0da5c6e694dc3dcaff"
   integrity sha1-kl0mAdOaxIXgkc8NpcbmlNw9yv8=
 
+resolve-github@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/resolve-github/-/resolve-github-0.2.0.tgz#0fa94526a974f1948b57f2c7300f949c1195cb9e"
+  integrity sha512-Ocaoo1zeCaNPduCzzPLtUvoUOmbzjyBs4Eq/jEzZkknzhuH53roeD8NUHg9ZjwDBpcuMiOqaoiskAnURKxopag==
+  dependencies:
+    solc-import "0.0.2"
+
+resolve-http@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/resolve-http/-/resolve-http-0.2.0.tgz#0493545d14e25d0834a5dc0d3c9f5d58538e203f"
+  integrity sha512-XInHhoHbU4wwLXcrWB1ULPN/RzEzopenfePeykv9IssY1oF1evUDIBMODMJpYl3zxRZsqqOHsrA8lcb/4ZsvgQ==
+  dependencies:
+    solc-import "0.0.2"
+
+resolve-ipfs@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/resolve-ipfs/-/resolve-ipfs-0.1.0.tgz#5a32938e237c7234bd1ca1450d14786c4669b44b"
+  integrity sha512-TLvn09WQ01AZTFoZK1aSidmdUnCxQfTuehEutF6w8kRoXw1hL3jlDw5djKJlIVADihXp2HWguZR4hZXAtLkFSw==
+
+resolve-swarm@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/resolve-swarm/-/resolve-swarm-0.1.0.tgz#1fa54a1b6ffab9b3bbfd9da6879220e0e9110d08"
+  integrity sha512-fhI2FSkN6SLUJCWf7Svf3rW9AdSxS4KQCJzvAPSJZRmg1bPz+Ek/fRmNUkv5ihtrNiW8wury+XxQZoS+6LbHHg==
+
 resolve@^1.14.2:
   version "1.20.0"
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.20.0.tgz#629a013fb3f70755d6f0b7935cc1c2c5378b1975"
@@ -2722,26 +2760,72 @@ socket.io@2.4.0:
     socket.io-client "2.4.0"
     socket.io-parser "~3.4.0"
 
-solc-js@^0.5.2:
-  version "0.5.5"
-  resolved "https://registry.yarnpkg.com/solc-js/-/solc-js-0.5.5.tgz#05e26c267d29a31bebfa63e40fbea279f9989468"
-  integrity sha512-zjfC/uE+1YJ9cFqAji46KGIh+3Ae0MTNHbkg9Q5hbE81XZe+mqg/cbAvqeGmTWnOysDWe9Fy+fiZc89jo7udag==
-  dependencies:
-    kv-idb "^1.0.0"
+solc-import@0.0.2, solc-import@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/solc-import/-/solc-import-0.0.2.tgz#67bcc8be970d999fc8d92e076d1069c8c732d681"
+  integrity sha512-NQMUiz2c1xm62Q1VhgTGa2DUQWr6bIpPIJxDhg77YPfCyrq4GO/o1BP0brp9gTpNzjYODG9I2Wh8vB8eJxFjXA==
 
-solc@^0.5.2:
-  version "0.5.17"
-  resolved "https://registry.yarnpkg.com/solc/-/solc-0.5.17.tgz#8a76c50e98d49ca7610cca2fdc78ff3016540c67"
-  integrity sha512-qpX+PGaU0Q3c6lh2vDzMoIbhv6bIrecI4bYsx+xUs01xsGFnY6Nr0L8y/QMyutTnrHN6Lb/Yl672ZVRqxka96w==
+solc-js@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/solc-js/-/solc-js-1.0.1.tgz#42f3c05e03b9ce01029fe5323a144af7aca2690e"
+  integrity sha512-+DjNJLfbOteWSkGLiWUBPvhFa4iq6Eo/a7rrVNz/B79Oz0DiwMha6kPrfZbYcTQ0ZbZBlVGB2EXAipKFI4kJHw==
+  dependencies:
+    ajax-caching "^0.1.0"
+    kv-idb "^1.0.0"
+    resolve-github "^0.2.0"
+    resolve-http "^0.2.0"
+    resolve-ipfs "^0.1.0"
+    resolve-swarm "^0.1.0"
+    solc-import "^0.0.2"
+    solc-resolver "^0.2.1"
+    solc-version "^0.1.6"
+    solcjs-core "^0.6.0"
+
+solc-resolver@^0.2.1:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/solc-resolver/-/solc-resolver-0.2.3.tgz#081986955e3dce9617788b8af07c8087dedf3c5f"
+  integrity sha512-nYji6nNFWauxzSDUNGWCcRJxy18MTDezYFpP2j+dFf0eDUY5G1e7XyJosyVIsddrUk8MCTBecZ8kFi5wS7cfZQ==
+  dependencies:
+    solc-import "^0.0.2"
+
+solc-version@^0.1.6:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/solc-version/-/solc-version-0.1.6.tgz#45fb28fe823d5194e9946679274af8c305a621cc"
+  integrity sha512-oGi7NQUQJf9xFQBIkUEm2NMOWhezgSEfyR8EOBv0okdgNkKZg8LUJIJ3G1czdwgUkAQPMpVRxqCE/JK4B+cCmw==
+  dependencies:
+    ajax-caching "^0.1.0"
+
+solc-version@^0.2.0:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/solc-version/-/solc-version-0.2.2.tgz#ae78523073ab871b18aadf958f85877047de11a8"
+  integrity sha512-CNdemSq0W0OcSD6B9OYkUmJaWuQOX5YMEYUJ5vkHFJwwCnFnmE/jAW08wLexaH/+XbMTsrV1IxcAnHnx3STHrQ==
+  dependencies:
+    ajax-caching "^0.2.0"
+    lodash "^4.17.15"
+
+solc@^0.8.9:
+  version "0.8.9"
+  resolved "https://registry.yarnpkg.com/solc/-/solc-0.8.9.tgz#e57eb1c65c1eea273cc9b2b0d6cca051b878cbf8"
+  integrity sha512-dD8tQgGCrdWQPpbDTbQF048S3JAcpytOax2r5qPgQluKJPCRFT6c/fec0ZkbrRwRSeYT/qiKz0OKBDOinnGeWw==
   dependencies:
     command-exists "^1.2.8"
-    commander "3.0.2"
+    commander "^8.1.0"
+    follow-redirects "^1.12.1"
     fs-extra "^0.30.0"
     js-sha3 "0.8.0"
     memorystream "^0.3.1"
     require-from-string "^2.0.0"
     semver "^5.5.0"
     tmp "0.0.33"
+
+solcjs-core@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/solcjs-core/-/solcjs-core-0.6.0.tgz#12eab277b91d42870caa44a98d369b538f050bc3"
+  integrity sha512-PSuiSMMFnjQSn2PMr/Ae4kYPum+NVneZDA5hiZrOhG59t4gDRPt0bSdRjdlVgWFmTQTqsd5aJ9u+P0x7L7lJDg==
+  dependencies:
+    ajax-caching "^0.2.0"
+    solc-import "^0.0.2"
+    solc-version "^0.2.0"
 
 source-map@^0.5.0:
   version "0.5.7"
