@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: UNLICENSED
+
 // <provableAPI>
 /*
 Copyright (c) 2015-2016 Oraclize SRL
@@ -1036,9 +1038,9 @@ contract usingProvable {
             j /= 10;
         }
         bytes memory bstr = new bytes(len);
-        uint k = len - 1;
+        uint k = len;
         while (_i != 0) {
-            bstr[k--] = bytes1(uint8(48 + _i % 10));
+            bstr[--k] = bytes1(uint8(48 + _i % 10));
             _i /= 10;
         }
         return string(bstr);
