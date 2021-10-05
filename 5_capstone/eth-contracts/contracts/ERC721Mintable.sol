@@ -213,7 +213,7 @@ contract ERC721 is Pausable, ERC165 {
     address to,
     uint256 tokenId
   ) public {
-    require(_isApprovedOrOwner(msg.sender, tokenId));
+    require(_isApprovedOrOwner(msg.sender, tokenId), "permission is required to transfer tokenId");
 
     _transferFrom(from, to, tokenId);
   }
@@ -554,7 +554,7 @@ contract ERC721Metadata is ERC721Enumerable, usingProvable {
   }
 
   function tokenURI(uint256 tokenId) external view returns (string memory) {
-    require(_exists(tokenId));
+    require(_exists(tokenId), "token is not exist");
     return _tokenURIs[tokenId];
   }
 
