@@ -14,11 +14,9 @@ contract("TestSquareVerifier", (accounts) => {
   // - use the contents from proof.json generated from zokrates steps
   it("Test verification with correct proof", async () => {
     const isVerified = await contract.verifyTx.call(
-      {
-        a: proof.proof.a,
-        b: proof.proof.b,
-        c: proof.proof.c,
-      },
+      proof.proof.a,
+      proof.proof.b,
+      proof.proof.c,
       proof.inputs
     );
 
@@ -30,11 +28,9 @@ contract("TestSquareVerifier", (accounts) => {
     const incorrectInputs = proof.inputs.map((input) => input.substr(0, input.length - 1) + "2");
 
     const isVerified = await contract.verifyTx.call(
-      {
-        a: proof.proof.a,
-        b: proof.proof.b,
-        c: proof.proof.c,
-      },
+      proof.proof.a,
+      proof.proof.b,
+      proof.proof.c,
       incorrectInputs
     );
 
