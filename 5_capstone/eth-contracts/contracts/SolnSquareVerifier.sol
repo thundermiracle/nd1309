@@ -80,7 +80,11 @@ contract SolnSquareVerifier is ERC721TokenRealEstate {
     bytes32 solutionKey = getSolutionKey(a, b, c, input);
     Solution memory solution = solutions[solutionKey];
     require(solution.isVerified, "Token is not verified");
+    require(!solution.isMinted, "Toke has alreay been minted");
 
-    return mint(solution.to, solution.tokenId);
+    bool isMinted = mint(solution.to, solution.tokenId);
+    solution.isMinted = isMinted;
+
+    return isMinted;
   }
 }
