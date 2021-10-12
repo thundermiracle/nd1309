@@ -17,6 +17,7 @@
     "@openzeppelin/contracts": "^4.3.2",
     "@truffle/hdwallet-provider": "^1.5.0",
     "solc": "^0.8.9",
-    "solc-js": "^1.0.1"
+    "solc-js": "^1.0.1",
+    "zokrates-js": "^1.0.36"
   }
 }

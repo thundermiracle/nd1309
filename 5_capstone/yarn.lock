@@ -3183,3 +3183,8 @@ yeast@0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/yeast/-/yeast-0.1.2.tgz#008e06d8094320c372dbc2f8ed76a0ca6c8ac419"
   integrity sha1-AI4G2AlDIMNy28L47XagymyKxBk=
+
+zokrates-js@^1.0.36:
+  version "1.0.36"
+  resolved "https://registry.yarnpkg.com/zokrates-js/-/zokrates-js-1.0.36.tgz#4c3f95fe67c1ef569cafd808967a0a13fbf84b1e"
+  integrity sha512-+KQv0jK3OCZr7zB5bXucDDMyAIXbCmkRP5PT7vfOHT3KPI79qEKJ2dcj/ao5oN5peXggioYLKonnZFKUAoozqg==
