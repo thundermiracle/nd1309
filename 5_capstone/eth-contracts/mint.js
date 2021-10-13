@@ -1,3 +1,4 @@
+// From https://github.com/aelmanaa/Blockchain-Capstone/blob/master/eth-contracts/scripts/mint.js
 // truffle exec mint.js --network rinkeby
 const fs = require("fs");
 const { initialize } = require("../node_modules/zokrates-js/node");
